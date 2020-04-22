@@ -10,7 +10,11 @@
 			padding: 0;
 			height: 100%;
 			/*background: #e9ecef !important;*/
-			background-image: url("Images/home_screen_bg.jpeg");
+			background-image: url("Images/home_screen_bg1.jpg");
+			background-repeat: no-repeat;
+  		background-size: 800px 660px;
+
+
 		}
 		.user_card {
 			height: 400px;
@@ -30,13 +34,14 @@
 			border-radius: 5px;
 
 		}
+
 		.brand_logo_container {
 			position: absolute;
 			height: 170px;
 			width: 170px;
 			top: -75px;
 			border-radius: 50%;
-			background: #e9ecef;
+			background: #f4e4c3;
 			padding: 10px;
 			text-align: center;
 		}
@@ -66,7 +71,7 @@
 		}
 		.input-group-text {
 		background: #c0392b !important;
-		color: #e9ecef !important;
+		color: #ffff !important;
 			border: 0 !important;
 			border-radius: 0.25rem 0 0 0.25rem !important;
 		}
@@ -75,10 +80,11 @@
 		.input_pass:focus {
 			box-shadow: none !important;
 			outline: 0px !important;
-			background: #e9ecef !important;
+			background: #ffff !important;
 		}
 		.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
 			background-color: #c0392b !important;
+
 		}
 		.checkboxlabel{
 
@@ -89,4 +95,3 @@
 				text-align: center;
 				margin-top: 70px;
 		}
-	
