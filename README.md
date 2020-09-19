@@ -1,2 +1,0 @@
-# gmkknits
-GMKKNITS Billing Apllication
