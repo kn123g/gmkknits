@@ -1,0 +1,39 @@
+form{
+  padding: 20px;
+}
+mat-card{
+  padding: 0px;
+}
+.body{
+  padding: 100px;
+  background-image: url("../../../assets/images/home_screen_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: 800px 660px;
+  position: relative;
+}
+.usercard{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+}
+.brand_logo_container {
+  position: absolute;
+  border-radius: 50%;
+  background: #f4e4c3;
+  padding: 5%;
+  top: 8%;
+  right : 13.5%;
+  text-align: center;
+  height: 5%;
+  width: 3%;
+}
+.brand_logo {
+  position: absolute;
+  top: 4%;
+  right : 6%;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
