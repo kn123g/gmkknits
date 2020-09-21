@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MUser } from './user.model';
- declare function require(name:string);
+declare function require(name:string);
 // var PouchDB = require("pouchdb-browser");
 //import * as PouchDB from 'pouchdb-browser';
 const PouchDB = require('pouchdb').default;
