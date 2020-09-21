@@ -4,6 +4,7 @@ import {LoginComponent} from './login/login.component'
 import {AngularMaterialModule} from '../angular-material.module';
 import { FlexLayoutModule } from '../../../node_modules/@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -12,14 +13,16 @@ import {FormsModule} from '@angular/forms';
     CommonModule,
     AngularMaterialModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   exports:[
     LoginComponent,
     AngularMaterialModule,
     CommonModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ]
 })
 export class AuthModule { }

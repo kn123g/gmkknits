@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MUser } from './user.model';
-import * as sqlite from 'sqlite'
-import { open }  from 'sqlite';
-import  * as  sqlite3  from 'sqlite3';
+ declare function require(name:string);
+// var PouchDB = require("pouchdb-browser");
+//import * as PouchDB from 'pouchdb-browser';
+const PouchDB = require('pouchdb').default;
 
 @Injectable({providedIn : 'root'})
 export class AuthService {
@@ -10,19 +11,21 @@ export class AuthService {
   private db :any;
 
    constructor() {
-    open({
-      filename: '/tmp/database.db',
-      driver: sqlite3.Database
-    }).then((db) => {
-        console.log("connected");
-    })
+    this.db = new PouchDB(
+			"gmkknits-pouchdb",
+			{
+				auto_compaction: true
+			}
+		);
 	}
    addUser(name : string ,password :string ){
+     console.log('called');
    console.log(name + '   ' + password);
-// this.db.put({_id: ( "user:" + ( new Date() ).getTime() ),name,password}).then((r) =>
-// {
-//   return r;
-// })
+       this.db.put({_id: ( "user:" + ( new Date() ).getTime() ),name,password}).then((r) =>
+   {
+     console.log("connected...");
+       return r;
+   })
 
  }
 }

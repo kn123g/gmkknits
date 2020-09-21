@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     if(loginForm.invalid)
     {
       this.formValid = false;
+      console.log("login.component.ts = > invalid form");
     }
     else{
       console.log("login.component.ts = > after login response");
