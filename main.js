@@ -14,16 +14,16 @@ app.on('ready',()=>{
 
   globalShortcut.register('f5', function() {
 		console.log('f5 is pressed')
-		mainWindow.reload()
+		mainWindow.reload();
 	});
 	globalShortcut.register('CommandOrControl+R', function() {
 		console.log('CommandOrControl+R is pressed')
-		mainWindow.reload()
+		mainWindow.reload();
   });
   // mainWindow.on('closed', function () {
   //   mainWindow = null
   // });
-  mainWindow.setMenu(null);
+ // mainWindow.setMenu(null);
 
 
   //mainWindow.setFullScreen(true);

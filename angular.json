@@ -121,6 +121,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "gmkknits-invoice-electron"
+    }
+  },
+  "defaultProject": "gmkknits-invoice-electron",
+  "cli": {
+    "analytics": false
+  }
 }
