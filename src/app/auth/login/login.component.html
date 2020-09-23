@@ -1,7 +1,8 @@
-<div fxLayoutAlign="end center" fxFlexFill class="body" >
-  <mat-card class="example-card" fxFlex="30" class="usercard">
+<div  fxFlexFill fxLayoutAlign="end center"  class="body" >
+  <div fxFlex.gt-sm="28"  >
+  <mat-card class="example-card" class="usercard">
 
-      <form (submit)="onSubmitButtonClick(loginForm)" fxLayoutAlign="stretch" fxLayout="column" #loginForm="ngForm">
+      <form (submit)="onSubmitButtonClick(loginForm)"  fxLayoutAlign="stretch" fxLayout="column" #loginForm="ngForm">
         <mat-toolbar fxLayoutAlign="center center bottom" class="title">GMK KNITS</mat-toolbar>
         <mat-form-field appearance="outline">
           <mat-icon matPrefix color='accent'>account_box</mat-icon>
@@ -31,11 +32,13 @@
           <mat-error color="warn" *ngIf="password.invalid && !formValid">Please Enter password</mat-error>
         </mat-form-field>
         <button class="btn" color='primary' type="submit" mat-stroked-button>Login</button>
+        <div fxLayoutAlign="center center" class="brand_logo_container">
+          <img  src="assets/images/brand-logo.png" class="brand_logo" alt="Logo"/>
+        </div>
       </form>
   </mat-card>
-  <div class="brand_logo_container">
-    <img src="/assets/images/home_screen_bg.jpg" class="brand_logo" alt="Logo"/>
-    </div>
+  
+</div>
 </div>
 
 

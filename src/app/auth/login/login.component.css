@@ -21,17 +21,14 @@ mat-card{
   position: absolute;
   border-radius: 50%;
   background: #ffb74d;
-  padding: 5%;
-  top: 9%;
-  right : 14.5%;
-  text-align: center;
-  height: 3%;
-  width: 1%;
+  padding: 70px;
+  top: -23%;
+  left: 27%;
 }
 .brand_logo {
   position: absolute;
-  top:3.5%;
-  right : 3%;
+  top:4%;
+  left: 4.1%;
   height: 90%;
   width: 90%;
   border-radius: 50%;
