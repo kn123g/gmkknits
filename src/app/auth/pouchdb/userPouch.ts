@@ -18,7 +18,7 @@ export class UserPouch{
             );
       }
 
-    addUser(authData : MUser ) : string{
+    addUser(authData : MUser ) {
 
         console.log(authData.firstName + '   ' +  authData.lastName + '   ' + authData.userid + '   ' + 
         authData.email + '   ' + authData.password + '   ' + authData.phoneno);
