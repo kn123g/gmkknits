@@ -1,31 +1,46 @@
 import { Injectable } from '@angular/core';
 import { MUser } from './user.model';
-declare function require(name:string);
-// var PouchDB = require("pouchdb-browser");
-//import * as PouchDB from 'pouchdb-browser';
-const PouchDB = require('pouchdb').default;
+import{Router} from '@angular/router';
+import {UserPouch} from './pouchdb/userPouch'
+import {Subject} from 'rxjs';
 
 @Injectable({providedIn : 'root'})
 export class AuthService {
 
-  private db :any;
+    private token :string;
+    private authStatusListener = new Subject<boolean>();
+    private userAuthentication = false;
+    private tokenTimer: any;
+    private userId : string;
 
-   constructor() {
-    this.db = new PouchDB(
-			"gmkknits-pouchdb",
-			{
-				auto_compaction: true
-			}
-		);
-	}
-   addUser(name : string ,password :string ){
-     console.log('called');
-   console.log(name + '   ' + password);
-       this.db.put({_id: ( "user:" + ( new Date() ).getTime() ),name,password}).then((r) =>
-   {
-     console.log("connected...");
-       return r;
-   })
+    constructor(public userPdb : UserPouch  ){}
+    getToken(){
+        return this.token;
+    }
+    getUserAuthentication(){
+        return this.userAuthentication;
+    }
+    getAuthStatusListener(){
+        return this.authStatusListener.asObservable();
+    }
+    getUserId(){
+      return this.userId;
+    }
 
- }
+  createUser(email : string,password :string)
+    {   
+        const authData : MUser = {
+          firstName : 'admin',
+          lastName : 'user',
+          userid : 'admin123',
+          email : email,
+          password : password,
+          phoneno : '9809543211'
+        };
+        return this.userPdb.addUser(authData).then(result => {
+            console.log(result);
+        });     
+    }
+
+   
 }

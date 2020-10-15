@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
     }
     else{
       console.log("login.component.ts = > after login response");
-       console.log(this.authservice.addUser(loginForm.value.username,loginForm.value.password));
-       loginForm.resetForm();
+      this.authservice.createUser(loginForm.value.username,loginForm.value.password);
+      loginForm.resetForm();
     }
   }
 }
