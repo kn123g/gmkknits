@@ -23,6 +23,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FlexLayoutModule,
     FormsModule,
     BrowserAnimationsModule
-  ]
+ ]
 })
 export class AuthModule { }

@@ -1,0 +1,167 @@
+<div class="background">
+
+  <mat-grid-list  cols="5" rowHeight="70px">
+    <mat-grid-tile
+        colspan="1"
+        rowspan="1" style="font-size: 12px;" >
+
+          <mat-form-field color="warn" appearance="outline">
+            <mat-label>Invoice No</mat-label>
+            <input class="billno" matInput disabled="true"  value="1213">
+            <mat-icon color="primary" matSuffix>receipt</mat-icon>
+          </mat-form-field>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile
+        colspan="1"
+        rowspan="1" style="font-size: 12px;">
+      <form>
+        <mat-form-field color="primary"  appearance="outline">
+          <mat-label>Choose a date</mat-label>
+          <input color="primary"  matInput [matDatepicker]="picker" [formControl]="date"  [matDatepicker]="picker1" >
+          <mat-datepicker-toggle color="primary"  matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker color="primary"  #picker></mat-datepicker>
+        </mat-form-field>
+      </form>
+    </mat-grid-tile>
+
+    <mat-grid-tile
+        colspan="1"
+        rowspan="1" style="font-size: 12px;">
+
+
+          <mat-form-field  appearance="outline">
+            <mat-label>Customer</mat-label>
+            <input type="text"
+                   placeholder="Customer"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon color="primary" matSuffix>business</mat-icon>
+          </mat-form-field>
+
+
+    </mat-grid-tile>
+
+    <mat-grid-tile
+        colspan="1"
+        rowspan="1" style="font-size: 12px;" >
+
+          <mat-form-field appearance="outline">
+            <mat-label>GSTIN</mat-label>
+            <input matInput placeholder="GSTIN" required>
+            <mat-icon color="primary" matSuffix>add_box</mat-icon>
+          </mat-form-field>
+
+    </mat-grid-tile>
+
+
+    <mat-grid-tile
+        colspan="1"
+        rowspan="2" style="font-size: 12px;" >
+
+        <form>
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <textarea matInput style="height:'77px'" placeholder="Address"></textarea>
+          <mat-icon color="primary" matPrefix>home</mat-icon>
+          </mat-form-field>
+        </form>
+    </mat-grid-tile>
+
+    <mat-grid-tile
+    colspan="1"
+    rowspan="1" style="font-size: 12px;">
+    <form>
+      <mat-form-field appearance="outline">
+        <mat-label>Phone No</mat-label>
+        <mat-icon color="primary" matSuffix>phone</mat-icon>
+        <input  matInput  placeholder="phone"  required type="number">
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+
+    <mat-grid-tile
+    colspan="1"
+    rowspan="1" style="font-size: 12px;">
+    <form>
+      <mat-form-field appearance="outline">
+        <mat-label>Job</mat-label>
+        <input color="primary" matInput placeholder="Job">
+        <mat-icon color="primary" matSuffix>work</mat-icon>
+      </mat-form-field>
+    </form>
+</mat-grid-tile>
+
+<mat-grid-tile
+colspan="1"
+rowspan="1" style="font-size: 12px;">
+<form>
+  <mat-form-field appearance="outline">
+    <mat-label>Party DC No</mat-label>
+    <input matInput placeholder="Party DC No">
+    <mat-icon color="primary" matSuffix>note_add</mat-icon>
+  </mat-form-field>
+</form>
+</mat-grid-tile>
+
+<mat-grid-tile
+colspan="1"
+rowspan="1" style="font-size: 12px;">
+<form>
+  <mat-form-field appearance="outline" >
+    <mat-label>Reference</mat-label>
+    <input matInput placeholder="Reference">
+    <mat-icon color="primary" matSuffix>notes</mat-icon>
+  </mat-form-field>
+</form>
+</mat-grid-tile>
+
+<mat-grid-tile
+colspan="5"
+rowspan="5" style="font-size: 12px;"   >
+
+
+<div class="example-container">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position" >
+      <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name" >
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="weight">
+      <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="symbol" >
+      <mat-header-cell *matHeaderCellDef > Symbol </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row  *matHeaderRowDef="displayedColumns; sticky: true" ></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+</div>
+
+
+</mat-grid-tile>
+
+
+
+

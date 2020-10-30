@@ -5,11 +5,12 @@ mat-card{
   padding: 0px;
 }
 .body{
-  padding: 100px;
+  padding: 140px  50px  150px  50px ;
   background-image: url("../../../assets/images/home_screen_bg.jpg");
   background-repeat: no-repeat;
   background-size: 800px 660px;
   position: relative;
+  height: 100%;
 }
 .usercard{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -23,7 +24,7 @@ mat-card{
   background: #ffb74d;
   padding: 70px;
   top: -23%;
-  left: 27%;
+  left: 30%;
 }
 .brand_logo {
   position: absolute;

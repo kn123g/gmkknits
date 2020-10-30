@@ -8,7 +8,7 @@ import{AuthService}from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
+
   hide  = true;
   formValid = true;
   constructor(public authservice  : AuthService) {
@@ -24,8 +24,9 @@ export class LoginComponent implements OnInit {
       console.log("login.component.ts = > invalid form");
     }
     else{
-      console.log("login.component.ts = > after login response");
+      //console.log("login.component.ts = > after login response");
       this.authservice.createUser(loginForm.value.username,loginForm.value.password);
+      this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
       loginForm.resetForm();
     }
   }
