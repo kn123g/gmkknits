@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+export interface InvoiceTable{
+  sno: number;
+  dc: string;
+  date: Date;
+  fabric: string;
+  count: number;
+  mill : string;
+  dia:string;
+  weight:number;
+  price:number;
+  amount:number
 }
 
 @Component({
@@ -20,28 +28,58 @@ export interface PeriodicElement {
 export class InvoiceComponent implements OnInit {
 
   date = new FormControl(new Date());
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-
-  ELEMENT_DATA: PeriodicElement[] = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+  customerControl = new FormControl();
+  fabricControl = new FormControl();
+  customerOptions: string[] = ['One', 'Two', 'Three'];
+  fabricOptions: string[] = ['cotton', 'polyester', 'somethng'];
+  displayedColumns: string[] = ['sno','dc', 'date', 'fabric', 'count','mill','dia','weight','price','amount'];
+  tableDate : Date = new Date();
+  ELEMENT_DATA: InvoiceTable[] = [
+    {sno: 1, dc: "dc",date: this.tableDate,fabric: 'string',count: 2,mill : 'string',dia:'string',
+      weight:4,price:600000,amount:1000000},
+    {sno: 2, dc: "dc",date: this.tableDate,fabric: 'string',count: 2,mill : 'string',dia:'string',
+      weight:4,price:600000,amount:1000000}
   ];
-
   dataSource = this.ELEMENT_DATA;
+  addRow : InvoiceTable ;
+
+  filteredCustomerOptions: Observable<string[]>;
+  filteredFabricOptions: Observable<string[]>;
+
+  ngOnInit() {
+    this.filteredCustomerOptions = this.customerControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCustomer(value))
+    );
+    this.filteredFabricOptions = this.fabricControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterFabric(value))
+    );
+  }
+  private _filterCustomer(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.customerOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
 
 
+  private _filterFabric(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.fabricOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+   add(){
+    this.addRow =
+      {
+    sno: 100, dc: "dcadd",date: this.tableDate,fabric: 'addstrn',count: 2,mill : 'string',dia:'string',amount:6,price:6,weight:123
+       };
+      this.ELEMENT_DATA.push(this.addRow);
+
+      console.log(this.ELEMENT_DATA);
+       }
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
 
 }
