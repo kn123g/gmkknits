@@ -11,9 +11,9 @@
           color="primary"
           #username="ngModel"
           ngModel
+          required
           matInput type="text"
           placeholder="username"
-          required
           name = "username">
           <mat-error   *ngIf="username.invalid && !formValid">Please Enter username</mat-error>
         </mat-form-field>

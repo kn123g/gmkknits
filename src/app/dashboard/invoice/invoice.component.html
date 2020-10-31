@@ -19,7 +19,7 @@
       <form>
         <mat-form-field color="primary"  appearance="outline">
           <mat-label>Choose a date</mat-label>
-          <input color="primary"  matInput [matDatepicker]="picker" [formControl]="date"  [matDatepicker]="picker1" >
+          <input color="primary"  matInput [matDatepicker]="picker" [formControl]="date" >
           <mat-datepicker-toggle color="primary"  matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker color="primary"  #picker></mat-datepicker>
         </mat-form-field>
@@ -122,126 +122,204 @@ rowspan="1" style="font-size: 12px;">
 
 <mat-grid-tile
 colspan="5"
-rowspan="5" style="font-size: 12px;"   >
+rowspan="1" style="font-size: 12px;">
+
+<div >
+
+  <form (submit)="add(tableRow)" #tableRow="ngForm">
+    <mat-form-field class="mat-cell-large" appearance="outline">
+      <mat-label>DC</mat-label>
+      <input color="primary"
+      #dc="ngModel"
+      ngModel
+      required
+      name="dc"
+      matInput placeholder="DC">
+      <mat-error color="warn"  *ngIf="dc.invalid && !tableRowformValid">Please Enter DC</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-large" appearance="outline">
+      <mat-label>Date</mat-label>
+      <input color="primary"
+      ngModel
+      required
+      matInput
+      name="date"
+      [matDatepicker]="rowDatepicker"
+      [formControl]="date" >
+          <mat-datepicker-toggle color="primary"  matSuffix [for]="rowDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker color="primary"  #rowDatepicker></mat-datepicker>
+      <mat-error  color="warn"   *ngIf="date.invalid && !tableRowformValid">Please Select Date</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-large" appearance="outline">
+      <mat-label>Fabric</mat-label>
+      <input color="primary"
+      #fabric="ngModel"
+      ngModel
+      required
+      name="fabric"
+      matInput placeholder="Fabric">
+      <mat-error color="warn"   *ngIf="fabric.invalid && !tableRowformValid">Please Select Date</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-vsmall" appearance="outline">
+      <mat-label>Count</mat-label>
+      <input color="primary"
+      #count="ngModel"
+      ngModel
+      required
+      name="count"
+      matInput placeholder="Count">
+      <mat-error color="warn"   *ngIf="count.invalid && !tableRowformValid">Please Enter Count</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-xlarge" appearance="outline">
+      <mat-label>Mill</mat-label>
+      <input color="primary"
+      #mill="ngModel"
+      ngModel
+      required
+      name="mill"
+      matInput placeholder="Mill">
+      <mat-error  color="warn"  *ngIf="mill.invalid && !tableRowformValid">Please Enter Mill</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-large" appearance="outline">
+      <mat-label>Dia</mat-label>
+      <input color="primary"
+      #dia="ngModel"
+      ngModel
+      required
+      name="dia"
+      matInput placeholder="Dia">
+      <mat-error color="warn"   *ngIf="dia.invalid && !tableRowformValid">Please Enter Dia</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-vsmall" appearance="outline">
+      <mat-label>Weight</mat-label>
+      <input color="primary"
+      #weight="ngModel"
+      ngModel
+      required
+      name="weight"
+      matInput placeholder="Weight">
+      <mat-error color="warn"   *ngIf="weight.invalid && !tableRowformValid">Please Enter Weight</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-small" appearance="outline">
+      <mat-label>Price</mat-label>
+      <input color="primary"
+      #price="ngModel"
+      ngModel
+      required
+      name="price"
+      matInput placeholder="Price">
+      <mat-error color="warn"   *ngIf="price.invalid && !tableRowformValid">Please Enter Price</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-cell-small"  appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input color="primary"
+      #amount="ngModel"
+      ngModel
+      required
+      name="amount"
+      matInput placeholder="Amount">
+      <mat-error color="warn"   *ngIf="amount.invalid && !tableRowformValid">Please Enter Amount</mat-error>
+    </mat-form-field>
+
+
+      <button mat-mini-fab color="warn" type="submit" >
+        <mat-icon>add</mat-icon>
+      </button>
+
+  </form>
+</div>
+</mat-grid-tile>
+<mat-grid-tile
+colspan="5"
+rowspan="4" style="font-size: 12px;"   >
 
 
 <div class="example-container">
-  <mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="sno" >
-      <mat-header-cell class="mat-header-cell-sno" *matHeaderCellDef> SNo </mat-header-cell>
-      <mat-cell class='mat-cell-sno'  *matCellDef="let element"> {{element.sno}} </mat-cell>
+
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="sno">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Sno</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.sno}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="dc" >
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef> DC </mat-header-cell>
-      <mat-cell class='mat-cell-large' *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-dc" appearance="outline">
-          <input matInput  [value]="element.dc">
-        </mat-form-field>
-      </mat-cell>
+    <ng-container matColumnDef="dc">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Dc</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.dc}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="date">
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef> Date </mat-header-cell>
-      <mat-cell class='mat-cell-large' *matCellDef="let element">
-        <form>
-          <mat-form-field color="primary" class=".mat-cell-large-input-dc"  appearance="outline">
-            <input color="primary"  matInput [matDatepicker]="picker" [formControl]="date"  [matDatepicker]="picker1" >
-            <mat-datepicker-toggle color="primary"  matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker color="primary"  #picker></mat-datepicker>
-          </mat-form-field>
-        </form>
-     </mat-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.date}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="fabric" >
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef > Fabric </mat-header-cell>
-      <mat-cell class='mat-cell-large' *matCellDef="let element">
-        <mat-form-field  appearance="outline">
-          <input type="text"
-                 placeholder="fabrc"
-                 aria-label="Number"
-                 matInput
-                 [formControl]="fabricControl"
-                 [matAutocomplete]="autoFabric">
-          <mat-autocomplete #autoFabric="matAutocomplete">
-            <mat-option *ngFor="let option of filteredFabricOptions | async"  [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-icon color="primary" matSuffix>business</mat-icon>
-        </mat-form-field>
-      </mat-cell>
+    <ng-container matColumnDef="fabric">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fabric</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.fabric}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="count" >
-      <mat-header-cell class="mat-header-cell-small" *matHeaderCellDef > Count </mat-header-cell>
-      <mat-cell class='mat-cell-small' *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-dc" appearance="outline">
-          <input matInput  [value]="element.count">
-        </mat-form-field>
-      </mat-cell>
+    <ng-container matColumnDef="count">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Count</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.count}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="mill" >
-      <mat-header-cell class="mat-header-cell-mill" *matHeaderCellDef > Mill </mat-header-cell>
-      <mat-cell class='mat-cell-mill' *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-mill" appearance="outline">
-          <input matInput  [value]="element.mill">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
+    <ng-container matColumnDef="mill">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Mill</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.mill}}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="dia" >
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef > DIA </mat-header-cell>
-      <mat-cell class='mat-cell-large' *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-dia" appearance="outline">
-          <input matInput  [value]="element.dia">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="dia">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Dia</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.dia}}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="weight" >
-      <mat-header-cell class="mat-header-cell-small" *matHeaderCellDef > Weight </mat-header-cell>
-      <mat-cell class='mat-cell-small' *matCellDef="let element">
-        <mat-form-field class="mat-cell-small-input-weight" appearance="outline">
-          <input matInput  [value]="element.weight">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="weight">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Weight</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.weight}}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="price" >
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef > Price </mat-header-cell>
-      <mat-cell class='mat-cell-large' *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-price" appearance="outline">
-          <input matInput  [value]="element.price">
-        </mat-form-field>
-    </mat-cell>
+  <ng-container matColumnDef="price">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.price}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.weight}}</mat-cell>
+  </ng-container>
+
+    <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-icon-button ><mat-icon>launch</mat-icon></button>
+                <button mat-icon-button color="warn" ><mat-icon>delete_outline</mat-icon></button>
+            </mat-cell>
     </ng-container>
 
 
-    <ng-container matColumnDef="amount" >
-      <mat-header-cell class="mat-header-cell-large" *matHeaderCellDef > Amount </mat-header-cell>
-      <mat-cell class="mat-cell-large" *matCellDef="let element">
-        <mat-form-field class="mat-cell-large-input-amount" appearance="outline">
-          <input matInput  [value]="element.amount">
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row  *matHeaderRowDef="displayedColumns; sticky: true" ></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
 
-    <div class="add-button-container" fxLayout="row" fxLayoutAlign="end">
-      <button mat-mini-fab color="warn" (click)="add()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+</mat-table>
 </div>
 
+</mat-grid-tile>
+
+
+<mat-grid-tile
+colspan="5"
+rowspan="1" style="font-size: 12px;">
 
 </mat-grid-tile>
+</mat-grid-list>
+</div>
 
 
 

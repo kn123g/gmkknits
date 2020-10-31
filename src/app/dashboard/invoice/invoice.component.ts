@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
+import {  MatTableDataSource } from '@angular/material/table';
 
 
 
 export interface InvoiceTable{
   sno: number;
   dc: string;
-  date: Date;
+  date: string;
   fabric: string;
   count: number;
   mill : string;
@@ -27,20 +29,22 @@ export interface InvoiceTable{
 
 export class InvoiceComponent implements OnInit {
 
+  tableRowformValid = true;
   date = new FormControl(new Date());
   customerControl = new FormControl();
   fabricControl = new FormControl();
   customerOptions: string[] = ['One', 'Two', 'Three'];
   fabricOptions: string[] = ['cotton', 'polyester', 'somethng'];
   displayedColumns: string[] = ['sno','dc', 'date', 'fabric', 'count','mill','dia','weight','price','amount'];
-  tableDate : Date = new Date();
-  ELEMENT_DATA: InvoiceTable[] = [
-    {sno: 1, dc: "dc",date: this.tableDate,fabric: 'string',count: 2,mill : 'string',dia:'string',
+  tableDate : Date = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate());
+  listData: InvoiceTable[] = [
+    {sno: 1, dc: "dc",date: this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
       weight:4,price:600000,amount:1000000},
-    {sno: 2, dc: "dc",date: this.tableDate,fabric: 'string',count: 2,mill : 'string',dia:'string',
+    {sno: 2, dc: "dc",date:  this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
       weight:4,price:600000,amount:1000000}
   ];
-  dataSource = this.ELEMENT_DATA;
+  dataSource : MatTableDataSource<InvoiceTable>;
+
   addRow : InvoiceTable ;
 
   filteredCustomerOptions: Observable<string[]>;
@@ -69,15 +73,22 @@ export class InvoiceComponent implements OnInit {
     return this.fabricOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
-   add(){
-    this.addRow =
-      {
-    sno: 100, dc: "dcadd",date: this.tableDate,fabric: 'addstrn',count: 2,mill : 'string',dia:'string',amount:6,price:6,weight:123
-       };
-      this.ELEMENT_DATA.push(this.addRow);
-
-      console.log(this.ELEMENT_DATA);
-       }
+   add(tableRow:NgForm){
+    if(tableRow.invalid)
+    {
+      this.tableRowformValid = false;
+      console.log("invoice.component.ts = > invalid tableRow form");
+    }
+    else{
+       this.addRow =
+        {
+        sno: 100, dc: "dcadd",date: this.tableDate.toDateString(),fabric: 'addstrn',count: 2,mill : 'string',dia:'string',amount:6,price:6,weight:123
+        };
+        this.listData.push(this.addRow);
+        this.dataSource = new MatTableDataSource<InvoiceTable>(this.listData);
+        console.log(this.dataSource);
+   }
+   }
 
   constructor() { }
 
