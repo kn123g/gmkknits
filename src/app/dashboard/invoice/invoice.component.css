@@ -44,13 +44,21 @@ table {
 }
 
 
-.mat-cell-vsmall {
-  min-width: 50px;
-  max-width: 80px;
+.mat-cell-xvsmall {
+  min-width: 40px;
+  max-width: 60px;
   box-sizing: border-box;
   font-size: 12px;
   color: #263238;
 }
+.mat-cell-vsmall {
+  min-width: 70px;
+  max-width: 100px;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #263238;
+}
+
 .mat-cell-small {
   min-width: 70px;
   max-width: 100px;
@@ -68,8 +76,8 @@ table {
 }
 
 .mat-cell-xlarge {
-  min-width: 150px;
-  max-width: 230px;
+  min-width: 180px;
+  max-width: 250px;
   box-sizing: border-box;
   font-size: 12px;
   color: #263238;
@@ -84,4 +92,19 @@ table {
 .mat-header-cell{
 
   color: aliceblue;
+}
+
+.footer{
+  padding: 2%;
+  width: 100%;
+  overflow: hidden;
+  float: left;
+}
+
+h1  {
+  padding: 2%;
+}
+
+h3{
+  padding: 2%;
 }
