@@ -168,22 +168,23 @@ export class InvoiceComponent implements OnInit {
     }
 
     calculate(){
-      this.getTotalCost();
-      this.getCGST();
-      this.getSGST();
-    }
-    getTotalCost()   {
       this.total = this.listData.map(t => t.amount).reduce((acc, value) => acc + value, 0);
       this.cgst = this.total * ( 12/100);
       this.sgst = this.total * ( 12/100);
       this.grandTotal = this.total + this.cgst + this.sgst;
+      this.getTotalCost();
+      this.getCGST();
+      this.getSGST();
+      this.getGrandTotal();
+    }
+    getTotalCost()   {
       return this.total.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
     }
     getCGST(){
-      return (this.total.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,')).toString();
+      return this.cgst.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
     }
     getSGST(){
-      return (this.total.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,')).toString();
+      return this.sgst.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
     }
     getGrandTotal(){
       return this.grandTotal.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
