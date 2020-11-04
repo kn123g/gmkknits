@@ -16,7 +16,7 @@ table {
 }
 
 .background{
-  background-color: cornsilk;
+  background-color: #fff9c4;
 }
 
 
@@ -92,6 +92,11 @@ table {
 .mat-header-cell{
 
   color: aliceblue;
+  font-size: 16px;
+}
+
+.mat-cell{
+  font-size: 16px;
 }
 
 .footer{
@@ -107,4 +112,20 @@ h1  {
 
 h3{
   padding: 2%;
+}
+.footerButton{
+  min-width: 100px;
+  max-width: 130px;
+  float: right;
+  border-radius: 25px;
+  border: 2px solid #263238;
+  background-color: #263238;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.footerButtonDiv{
+  padding-left: 2%;
+  padding-right: 2%;
 }

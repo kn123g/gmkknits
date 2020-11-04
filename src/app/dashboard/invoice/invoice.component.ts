@@ -4,7 +4,8 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
 import {  MatTableDataSource } from '@angular/material/table';
-import{InvoiceTable} from'./InvoiceTable.Model';
+import{InvoiceTable,Invoice} from './Invoice.Model';
+import{InvoicePouch} from './pouchdb/invoicePouch';
 
 
 
@@ -17,7 +18,10 @@ import{InvoiceTable} from'./InvoiceTable.Model';
 
 export class InvoiceComponent implements OnInit {
 
+
+
   tableRowformValid = true;
+  invoiceFormValid = true;
   date = new FormControl(new Date());
   rowDate = new FormControl(new Date());
   rowWeight : number ;
@@ -32,6 +36,8 @@ export class InvoiceComponent implements OnInit {
   displayedColumns: string[] = ['sno','dc', 'date', 'fabric', 'count','mill','dia','weight','price','amount','edit','delete'];
  // tableDate : Date = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate());
   listData: InvoiceTable[] = [];
+  invoice  : Invoice = new Invoice();
+  invoiceNo : number;
   // = [
   //  {sno: 1, dc: "dc",date: this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
   //    weight:4,price:600000,amount:1000000},
@@ -49,8 +55,11 @@ export class InvoiceComponent implements OnInit {
   filteredFabricOptions: Observable<string[]>;
   filteredMillOptions: Observable<string[]>;
 
+  constructor(public invoicePdb : InvoicePouch) { }
+
   ngOnInit() {
     this.autoCompleteReset();
+    this.invoiceNo = 123;
   }
   private _filterCustomer(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -189,7 +198,35 @@ export class InvoiceComponent implements OnInit {
     getGrandTotal(){
       return this.grandTotal.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
     }
-  constructor() { }
 
+    saveInvoice(invoiceForm:NgForm){
+      if(invoiceForm.invalid)
+      {
+        this.invoiceFormValid = false;
+        console.log("invoice.component.ts = > invalid invoice form");
+      }
+      else{
+            this.invoice.invoiceNo = this.invoiceNo;
+            this.invoice.invoiceDate = String(this.date.value);
+            this.invoice.customer = this.customerControl.value;;
+            this.invoice.gstNo = invoiceForm.value.gstNo;
+            this.invoice.address = invoiceForm.value.address;
+            this.invoice.phoneNo = invoiceForm.value.phoneNo;
+            this.invoice.job = invoiceForm.value.job;
+            this.invoice.partyDcNo = invoiceForm.value.partyDcNo;
+            this.invoice.reference = invoiceForm.value.reference;
+            this.invoice.invoiceTable = this.listData;
+            this.invoice.sgst = this.sgst;
+            this.invoice.cgst = this.cgst;
+            this.invoice.total = this.total;
+            this.invoice.grandTotal = Math.round(this.grandTotal);
+
+            this.invoice.roundOff =  Number((Math.round(this.grandTotal) - this.grandTotal).toFixed(2));
+            console.log(this.invoice);
+            console.log("invoice.component.ts => date " + this.date.value);
+          //   this.invoicePdb.addInvoice(this.listData);
+      }
+
+    }
 
 }

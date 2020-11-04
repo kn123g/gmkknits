@@ -1,12 +1,18 @@
-<div class="background">
+<div class="">
 
   <mat-grid-list  cols="5" rowHeight="70px">
+    <form #invoiceForm="ngForm">
     <mat-grid-tile
         colspan="1"
         rowspan="1" style="font-size: 12px;" >
           <mat-form-field color="warn" appearance="outline">
             <mat-label>Invoice No</mat-label>
-            <input class="billno" matInput disabled="true"  value="1213">
+            <input class="billno"
+             name="invoiceNo"
+             [value]="invoiceNo"
+             disabled
+             matInput
+             >
             <mat-icon color="primary" matSuffix>receipt</mat-icon>
           </mat-form-field>
     </mat-grid-tile>
@@ -14,15 +20,20 @@
     <mat-grid-tile
         colspan="1"
         rowspan="1" style="font-size: 12px;">
-      <form>
         <mat-form-field color="primary"  appearance="outline">
           <mat-label>Choose a date</mat-label>
-          <input color="primary"
-            matInput [matDatepicker]="picker" [value]="date.value" >
+          <input
+           color="primary"
+           matInput
+           [matDatepicker]="picker"
+           [value]="date.value"
+           required
+          #dateId
+          >
           <mat-datepicker-toggle color="primary"  matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker color="primary"  #picker></mat-datepicker>
+          <mat-error color="warn"  *ngIf="dateId.invalid && !invoiceFormValid">Please Select Date</mat-error>
         </mat-form-field>
-      </form>
     </mat-grid-tile>
 
     <mat-grid-tile
@@ -34,6 +45,7 @@
                    placeholder="Customer"
                    aria-label="Number"
                    matInput
+                   required
                    [formControl]="customerControl"
                    [matAutocomplete]="autoCustomer">
             <mat-autocomplete #autoCustomer="matAutocomplete">
@@ -42,6 +54,7 @@
               </mat-option>
             </mat-autocomplete>
             <mat-icon color="primary" matSuffix>business</mat-icon>
+            <mat-error color="warn"  *ngIf="customerControl.invalid && !invoiceFormValid">Please Enter Customer</mat-error>
           </mat-form-field>
     </mat-grid-tile>
 
@@ -51,8 +64,13 @@
 
           <mat-form-field appearance="outline">
             <mat-label>GSTIN</mat-label>
-            <input matInput placeholder="GSTIN" required>
+            <input matInput
+             #gstNo = "ngModel"
+             ngModel
+             name="gstNo"
+             placeholder="GSTIN" required>
             <mat-icon color="primary" matSuffix>add_box</mat-icon>
+            <mat-error color="warn"  *ngIf="gstNo.invalid && !invoiceFormValid">Please Enter GSTTIN</mat-error>
           </mat-form-field>
 
     </mat-grid-tile>
@@ -61,70 +79,81 @@
     <mat-grid-tile
         colspan="1"
         rowspan="2" style="font-size: 12px;" >
-
-        <form>
           <mat-form-field appearance="outline">
             <mat-label>Address</mat-label>
-            <textarea matInput style="height:'77px'" placeholder="Address"></textarea>
+            <textarea
+            #address = "ngModel"
+             ngModel
+             name="address"
+             placeholder="Address"
+             matInput style="height:'77px'"></textarea>
           <mat-icon color="primary" matPrefix>home</mat-icon>
-          </mat-form-field>
-        </form>
+           </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile
     colspan="1"
     rowspan="1" style="font-size: 12px;">
-    <form>
       <mat-form-field appearance="outline">
         <mat-label>Phone No</mat-label>
         <mat-icon color="primary" matSuffix>phone</mat-icon>
-        <input  matInput  placeholder="phone"  required type="number">
+        <input  matInput
+        #phoneNo = "ngModel"
+        ngModel
+        name="phoneNo"
+        required
+        placeholder="Phone No"  required type="number">
+        <mat-error color="warn"  *ngIf="phoneNo.invalid && !invoiceFormValid">Please Enter Phone No</mat-error>
       </mat-form-field>
-    </form>
   </mat-grid-tile>
 
     <mat-grid-tile
     colspan="1"
     rowspan="1" style="font-size: 12px;">
-    <form>
       <mat-form-field appearance="outline">
         <mat-label>Job</mat-label>
-        <input color="primary" matInput placeholder="Job">
+        <input color="primary"
+        #job = "ngModel"
+        ngModel
+        name="job"
+        matInput placeholder="Job">
         <mat-icon color="primary" matSuffix>work</mat-icon>
       </mat-form-field>
-    </form>
 </mat-grid-tile>
 
 <mat-grid-tile
 colspan="1"
 rowspan="1" style="font-size: 12px;">
-<form>
   <mat-form-field appearance="outline">
     <mat-label>Party DC No</mat-label>
-    <input matInput placeholder="Party DC No">
+    <input
+    #partyDcNo = "ngModel"
+    ngModel
+    name="partyDcNo"
+    matInput placeholder="Party DC No">
     <mat-icon color="primary" matSuffix>note_add</mat-icon>
   </mat-form-field>
-</form>
 </mat-grid-tile>
 
 <mat-grid-tile
 colspan="1"
 rowspan="1" style="font-size: 12px;">
-<form>
   <mat-form-field appearance="outline" >
     <mat-label>Reference</mat-label>
-    <input matInput placeholder="Reference">
+    <input
+    #reference = "ngModel"
+    ngModel
+    name="reference"
+    matInput placeholder="Reference">
     <mat-icon color="primary" matSuffix>notes</mat-icon>
   </mat-form-field>
-</form>
 </mat-grid-tile>
-
+</form>
 <mat-grid-tile
 colspan="5"
 rowspan="1" style="font-size: 12px;">
 
-<div >
-
+<div>
   <form (submit)="add(tableRow)" #tableRow="ngForm">
     <mat-form-field class="mat-cell-large" appearance="outline">
       <mat-label>DC</mat-label>
@@ -255,14 +284,14 @@ rowspan="1" style="font-size: 12px;">
 </mat-grid-tile>
 <mat-grid-tile
 colspan="5"
-rowspan="4" style="font-size: 12px;"   >
+rowspan="4" >
 
 
-<div class="example-container">
+<div class="example-container" >
 
-  <mat-table [dataSource]="dataSource" matSort>
+  <mat-table [dataSource]="dataSource" matSort >
     <ng-container matColumnDef="sno">
-        <mat-header-cell class="mat-cell-vsmall" *matHeaderCellDef mat-sort-header>Sno</mat-header-cell>
+        <mat-header-cell class="mat-cell-vsmall"  *matHeaderCellDef mat-sort-header>Sno</mat-header-cell>
         <mat-cell class="mat-cell-vsmall" *matCellDef="let element">{{element.sno}}</mat-cell>
     </ng-container>
 
@@ -342,13 +371,16 @@ rowHeight ="fit" style="font-size: 12px;">
       <h3   style="float: left;">CGST : {{     getCGST()      }}</h3>
       <h3   style="float:left;">SGST : {{ getSGST()  }}</h3>
       <h3   style="float:left;">Total : {{  getTotalCost()  }} </h3>
-      </div>
-    <div class="footer">
-      <h1   style="float:right;">GrandTotal :  {{ getGrandTotal()  }}</h1>
 
+      <h1   style="float:right;">GrandTotal :  {{ getGrandTotal()  }}</h1>
     </div>
 </mat-grid-tile>
 </mat-grid-list>
+
+      <div class="footerButtonDiv">
+          <button color="primary" class="footerButton" (click)="saveInvoice(invoiceForm)" mat-stroked-button>Save</button>
+          <button color="primary" class="footerButton" (click)="saveInvoice()" mat-stroked-button>Cancel</button>
+      </div>
 </div>
 
 
