@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import {  MatTableDataSource } from '@angular/material/table';
 import{InvoiceTable,Invoice} from './Invoice.Model';
 import{InvoicePouch} from './pouchdb/invoicePouch';
+import{InvoiceReport} from './invoice.report';
 
 
 
@@ -55,7 +56,7 @@ export class InvoiceComponent implements OnInit {
   filteredFabricOptions: Observable<string[]>;
   filteredMillOptions: Observable<string[]>;
 
-  constructor(public invoicePdb : InvoicePouch) { }
+  constructor(public invoicePdb : InvoicePouch,public invoiceReport : InvoiceReport) { }
 
   ngOnInit() {
     this.autoCompleteReset();
@@ -225,8 +226,13 @@ export class InvoiceComponent implements OnInit {
             console.log(this.invoice);
             console.log("invoice.component.ts => date " + this.date.value);
           //   this.invoicePdb.addInvoice(this.listData);
+
+          this.invoiceReport.print(this.invoice);
       }
 
+    }
+    cancelInvoice(invoiceForm:NgForm){
+      this.invoiceReport.print(this.invoice);
     }
 
 }
