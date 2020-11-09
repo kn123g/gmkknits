@@ -68,8 +68,7 @@ export class UserPouch{
           ( result: IPouchDBAllDocsResult ) : any[] => {
             return result.rows.filter(row  => row.doc.userId === userid);
           }
-        )
-      ;
+        );
       //console.log(promise);
       return promise;
     }

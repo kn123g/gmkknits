@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import {AngularMaterialModule} from'./angular-material.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
+import { HashLocationStrategy,LocationStrategy } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AngularMaterialModule,
     DashboardModule
   ],
-  providers: [],
+  providers: [{provide:LocationStrategy,useClass : HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,7 @@
 <div class="">
 
   <mat-grid-list  cols="5" rowHeight="70px">
-    <form #invoiceForm="ngForm">
+    <form (ngSubmit)="saveInvoice(invoiceForm,tableRow)" #invoiceForm="ngForm" >
     <mat-grid-tile
         colspan="1"
         rowspan="1" style="font-size: 12px;" >
@@ -11,8 +11,7 @@
              name="invoiceNo"
              [value]="invoiceNo"
              disabled
-             matInput
-             >
+             matInput>
             <mat-icon color="primary" matSuffix>receipt</mat-icon>
           </mat-form-field>
     </mat-grid-tile>
@@ -26,14 +25,13 @@
            color="primary"
            matInput
            [matDatepicker]="picker"
-           [value]="date.value"
+           [formControl]="date"
            required
-          #dateId
-          >
+           >
           <mat-datepicker-toggle color="primary"  matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker color="primary"  #picker></mat-datepicker>
-          <mat-error color="warn"  *ngIf="dateId.invalid && !invoiceFormValid">Please Select Date</mat-error>
-        </mat-form-field>
+          <mat-error color="warn"  *ngIf="date.invalid && !invoiceFormValid">select proper date</mat-error>
+          </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile
@@ -54,7 +52,7 @@
               </mat-option>
             </mat-autocomplete>
             <mat-icon color="primary" matSuffix>business</mat-icon>
-            <mat-error color="warn"  *ngIf="customerControl.invalid && !invoiceFormValid">Please Enter Customer</mat-error>
+            <mat-error color="warn"  *ngIf="customerControl.invalid && !invoiceFormValid">Enter Customer</mat-error>
           </mat-form-field>
     </mat-grid-tile>
 
@@ -68,9 +66,9 @@
              #gstNo = "ngModel"
              ngModel
              name="gstNo"
-             placeholder="GSTIN" required>
+             placeholder="GSTIN" maxlength="15" minlength="15"  required>
             <mat-icon color="primary" matSuffix>add_box</mat-icon>
-            <mat-error color="warn"  *ngIf="gstNo.invalid && !invoiceFormValid">Please Enter GSTTIN</mat-error>
+            <mat-error color="warn"  *ngIf="gstNo.invalid && !invoiceFormValid">Enter GSTTIN</mat-error>
           </mat-form-field>
 
     </mat-grid-tile>
@@ -102,8 +100,9 @@
         ngModel
         name="phoneNo"
         required
-        placeholder="Phone No"  required type="number">
-        <mat-error color="warn"  *ngIf="phoneNo.invalid && !invoiceFormValid">Please Enter Phone No</mat-error>
+        type="text" pattern="\d*" maxlength="10" minlength="10"
+        placeholder="Phone No"  required >
+        <mat-error color="warn"  *ngIf="phoneNo.invalid && !invoiceFormValid">Enter 10 digit Phone No</mat-error>
       </mat-form-field>
   </mat-grid-tile>
 
@@ -163,27 +162,25 @@ rowspan="1" style="font-size: 12px;">
       required
       name="dc"
       matInput placeholder="DC">
-      <mat-error color="warn"  *ngIf="dc.invalid && !tableRowformValid">Please Enter DC</mat-error>
+      <mat-error color="warn"  *ngIf="dc.invalid && !tableRowformValid">Enter DC</mat-error>
     </mat-form-field>
-
     <mat-form-field class="mat-cell-large" appearance="outline">
-        <mat-label>Date</mat-label>
-        <input color="primary"
-        [formControl]="rowDate"
-        matInput [matDatepicker]="rowPicker"
-        required
-        placeholder="Date" >
-        <mat-datepicker-toggle color="primary"  matSuffix [for]="rowPicker"></mat-datepicker-toggle>
-        <mat-datepicker color="primary"  #rowPicker></mat-datepicker>
-      </mat-form-field>
-
+      <mat-label>Date</mat-label>
+      <input color="primary"
+      [formControl]="rowDate"
+      matInput [matDatepicker]="rowPicker"
+      required
+      placeholder="Date" >
+      <mat-datepicker-toggle color="primary"  matSuffix [for]="rowPicker"></mat-datepicker-toggle>
+      <mat-datepicker color="primary"  #rowPicker></mat-datepicker>
+      <mat-error color="warn"   *ngIf="rowDate.invalid && !tableRowformValid">Select Proper Date</mat-error>
+    </mat-form-field>
     <mat-form-field class="mat-cell-large" appearance="outline">
       <mat-label>Fabric</mat-label>
       <input type="text" color="primary"
                    placeholder="Fabric"
                    aria-label="Number"
                    matInput
-                   #fabric
                    name="fabric"
                    [formControl]="fabricControl"
                    [matAutocomplete]="autoFabric"
@@ -193,7 +190,7 @@ rowspan="1" style="font-size: 12px;">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
-      <mat-error color="warn"   *ngIf="fabric.invalid && !tableRowformValid">Please Select Date</mat-error>
+      <mat-error color="warn"   *ngIf="fabricControl.invalid && !tableRowformValid">Enter Fabric</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-vsmall" appearance="outline">
@@ -204,8 +201,8 @@ rowspan="1" style="font-size: 12px;">
       [(ngModel)] = "rowCount"
       name="count"
       matInput placeholder="Count"
-      type ="number">
-      <mat-error color="warn"   *ngIf="count.invalid && !tableRowformValid">Please Enter Count</mat-error>
+      type="text" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)\d*">
+      <mat-error color="warn"   *ngIf="count.invalid && !tableRowformValid && count.value<1">Please Enter Count</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-xlarge" appearance="outline">
@@ -214,7 +211,6 @@ rowspan="1" style="font-size: 12px;">
                    placeholder="Mill"
                    aria-label="Number"
                    matInput
-                   #mill
                    name="mill"
                    [formControl]="millControl"
                    [matAutocomplete]="autoMill"
@@ -224,7 +220,7 @@ rowspan="1" style="font-size: 12px;">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
-      <mat-error  color="warn"  *ngIf="mill.invalid && !tableRowformValid">Please Enter Mill</mat-error>
+      <mat-error  color="warn"  *ngIf="millControl.invalid && !tableRowformValid">Enter Mill</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-large" appearance="outline">
@@ -235,7 +231,7 @@ rowspan="1" style="font-size: 12px;">
       required
       name="dia"
       matInput placeholder="Dia">
-      <mat-error color="warn"   *ngIf="dia.invalid && !tableRowformValid">Please Enter Dia</mat-error>
+      <mat-error color="warn"   *ngIf="dia.invalid && !tableRowformValid">Enter Dia</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-vsmall" appearance="outline">
@@ -245,9 +241,10 @@ rowspan="1" style="font-size: 12px;">
       required
       name="weight"
       [(ngModel)] = "rowWeight"
-      type ="number"
-      matInput placeholder="Weight">
-      <mat-error color="warn"   *ngIf="weight.invalid && !tableRowformValid">Please Enter Weight</mat-error>
+      type="text"
+      matInput placeholder="Weight"
+      pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)\d*">
+      <mat-error color="warn"   *ngIf="weight.invalid && !tableRowformValid">Enter Weight</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-small" appearance="outline">
@@ -257,10 +254,10 @@ rowspan="1" style="font-size: 12px;">
       #price="ngModel"
       required
       name="price"
-      type ="number"
+      type="text" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)\d*"
       matInput placeholder="Price"
      >
-      <mat-error color="warn"   *ngIf="price.invalid && !tableRowformValid">Please Enter Price</mat-error>
+      <mat-error color="warn"   *ngIf="price.invalid && !tableRowformValid">Enter Price</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mat-cell-small"  appearance="outline">
@@ -350,7 +347,9 @@ rowspan="4" >
     <ng-container matColumnDef="delete">
       <mat-header-cell class="mat-cell-xvsmall" *matHeaderCellDef>Delete</mat-header-cell>
       <mat-cell class="mat-cell-xvsmall" *matCellDef="let row">
-          <button mat-icon-button color="warn" (click)="delete(row.sno)" ><mat-icon>delete_outline</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="delete(row.sno)" >
+          <mat-icon>delete_outline</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
 
@@ -372,14 +371,14 @@ rowHeight ="fit" style="font-size: 12px;">
       <h3   style="float:left;">SGST : {{ getSGST()  }}</h3>
       <h3   style="float:left;">Total : {{  getTotalCost()  }} </h3>
 
-      <h1   style="float:right;">GrandTotal :  {{ getGrandTotal()  }}</h1>
+      <h1   style="float:right;">GrandTotal <mat-icon>₹</mat-icon> {{ getGrandTotal()  }}</h1>
     </div>
 </mat-grid-tile>
 </mat-grid-list>
 
       <div class="footerButtonDiv">
-          <button color="primary" class="footerButton" (click)="saveInvoice(invoiceForm)" mat-stroked-button>Save</button>
-          <button color="primary" class="footerButton" (click)="cancelInvoice(invoiceForm)" mat-stroked-button>Cancel</button>
+          <button color="primary" type="submit" class="footerButton" (click)="invoiceForm.valid;invoiceForm.ngSubmit.emit();"  mat-stroked-button>Save</button>
+          <button color="primary" class="footerButton" (click)="cancelInvoice(invoiceForm,tableRow)" mat-stroked-button>Cancel</button>
       </div>
 </div>
 

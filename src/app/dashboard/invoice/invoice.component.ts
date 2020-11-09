@@ -37,7 +37,7 @@ export class InvoiceComponent implements OnInit {
   displayedColumns: string[] = ['sno','dc', 'date', 'fabric', 'count','mill','dia','weight','price','amount','edit','delete'];
  // tableDate : Date = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate());
   listData: InvoiceTable[] = [];
-  invoice  : Invoice = new Invoice();
+  invoice  : Invoice ;
   invoiceNo : number;
   // = [
   //  {sno: 1, dc: "dc",date: this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
@@ -55,12 +55,13 @@ export class InvoiceComponent implements OnInit {
   filteredCustomerOptions: Observable<string[]>;
   filteredFabricOptions: Observable<string[]>;
   filteredMillOptions: Observable<string[]>;
+  invoiceReport ;
 
-  constructor(public invoicePdb : InvoicePouch,public invoiceReport : InvoiceReport) { }
+  constructor(public invoicePdb : InvoicePouch) { }
 
   ngOnInit() {
     this.autoCompleteReset();
-    this.invoiceNo = 123;
+    this.invoiceNo = this.invoicePdb.getInvoiceNo();
   }
   private _filterCustomer(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -99,6 +100,7 @@ export class InvoiceComponent implements OnInit {
    }
 
    add(tableRow:NgForm){
+     console.log("add");
     if(tableRow.invalid)
     {
       this.tableRowformValid = false;
@@ -107,6 +109,7 @@ export class InvoiceComponent implements OnInit {
     else{
        this.addRow =
         {
+        invoiceNo : this.invoiceNo ,
         sno: this.listData.length + 1,
         dc: tableRow.value.dc,
         date: String(this.rowDate.value).substr(4, 12),
@@ -114,7 +117,7 @@ export class InvoiceComponent implements OnInit {
         count: tableRow.value.count,
         mill :  this.millControl.value,
         dia: tableRow.value.dia,
-        amount: tableRow.value.price * tableRow.value.weight * tableRow.value.count ,
+        amount: Number (Number (tableRow.value.price * tableRow.value.weight * tableRow.value.count).toFixed(2)) ,
         price: tableRow.value.price,
         weight: tableRow.value.weight
         };
@@ -124,9 +127,10 @@ export class InvoiceComponent implements OnInit {
         this.autoCompleteReset();
         this.fabricControl.reset();
         this.millControl.reset();
-        this.filteredFabricOptions;
+        this.tableRowformValid = true;
         this.rowCount = 1;
         console.log(this.dataSource);
+        this.rowDate.setValue(new Date());
         this.calculate();
     }
     }
@@ -178,14 +182,22 @@ export class InvoiceComponent implements OnInit {
     }
 
     calculate(){
-      this.total = this.listData.map(t => t.amount).reduce((acc, value) => acc + value, 0);
-      this.cgst = this.total * ( 12/100);
-      this.sgst = this.total * ( 12/100);
-      this.grandTotal = this.total + this.cgst + this.sgst;
-      this.getTotalCost();
-      this.getCGST();
-      this.getSGST();
-      this.getGrandTotal();
+      if(this.listData.length > 0){
+        this.total = this.listData.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+        this.cgst = Number( Number(this.total * ( 2.5/100)).toFixed(2));
+        this.sgst = Number( Number(this.total * ( 2.5/100)).toFixed(2));
+        this.grandTotal = this.total + this.cgst + this.sgst;
+      }
+      else{
+        this.grandTotal=0;
+        this.total = 0;
+        this.cgst =0;
+        this.sgst=0;
+      }
+        this.getTotalCost();
+        this.getCGST();
+        this.getSGST();
+        this.getGrandTotal();
     }
     getTotalCost()   {
       return this.total.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
@@ -200,39 +212,99 @@ export class InvoiceComponent implements OnInit {
       return this.grandTotal.toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,');
     }
 
-    saveInvoice(invoiceForm:NgForm){
+    saveInvoice(invoiceForm:NgForm,tableRowForm:NgForm){
       if(invoiceForm.invalid)
       {
+        this.date.markAsTouched();
+        this.customerControl.markAsTouched();
+        invoiceForm.controls.gstNo.markAsTouched();
+        invoiceForm.controls.phoneNo.markAsTouched();
         this.invoiceFormValid = false;
         console.log("invoice.component.ts = > invalid invoice form");
       }
       else{
-            this.invoice.invoiceNo = this.invoiceNo;
-            this.invoice.invoiceDate = String(this.date.value);
-            this.invoice.customer = this.customerControl.value;;
-            this.invoice.gstNo = invoiceForm.value.gstNo;
-            this.invoice.address = invoiceForm.value.address;
-            this.invoice.phoneNo = invoiceForm.value.phoneNo;
-            this.invoice.job = invoiceForm.value.job;
-            this.invoice.partyDcNo = invoiceForm.value.partyDcNo;
-            this.invoice.reference = invoiceForm.value.reference;
-            this.invoice.invoiceTable = this.listData;
-            this.invoice.sgst = this.sgst;
-            this.invoice.cgst = this.cgst;
-            this.invoice.total = this.total;
-            this.invoice.grandTotal = Math.round(this.grandTotal);
+        if(this.listData.length > 0){
+          this.invoice = new Invoice();
+          this.invoice.invoiceNo = this.invoiceNo;
+          this.invoice.invoiceDate = String(this.date.value);
+          this.invoice.customer = this.customerControl.value.trim();
+          this.invoice.gstNo = String(invoiceForm.value.gstNo).toUpperCase().trim();
+          this.invoice.phoneNo = invoiceForm.value.phoneNo;
+          if(invoiceForm.value.address == null || invoiceForm.value.address.trim() =="")
+          {
+            this.invoice.address = "";
+          }
+          else{
+            this.invoice.address = invoiceForm.value.address.trim();
+          }
+          if(invoiceForm.value.job == null || invoiceForm.value.job.trim() =="")
+          {
+            this.invoice.job = "";
+          }
+          else{
+            this.invoice.job = invoiceForm.value.job.trim();
+          }
+          if(invoiceForm.value.partyDcNo == null|| invoiceForm.value.partyDcNo.trim() =="")
+          {
+            this.invoice.partyDcNo = "";
+          }
+          else{
+            this.invoice.partyDcNo = invoiceForm.value.partyDcNo.trim()
+          }
+          if(invoiceForm.value.reference == null || invoiceForm.value.reference.trim() =="")
+          {
+            this.invoice.reference = "";
+          }
+          else{
+            this.invoice.reference =invoiceForm.value.reference.trim() ;
+          }
+          this.invoice.invoiceTable = this.listData;
+          this.invoice.sgst = Number(this.getSGST() );
+          this.invoice.cgst = Number(this.getCGST() );
+          this.invoice.total = this.total;
+          this.invoice.grandTotal = Math.round(this.grandTotal);
 
-            this.invoice.roundOff =  Number((Math.round(this.grandTotal) - this.grandTotal).toFixed(2));
-            console.log(this.invoice);
-            console.log("invoice.component.ts => date " + this.date.value);
-          //   this.invoicePdb.addInvoice(this.listData);
+          this.invoice.roundOff =  Number((Math.round(this.grandTotal) - this.grandTotal).toFixed(2));
 
-          this.invoiceReport.print(this.invoice);
+          this.invoiceFormValid = true;
+        this.invoiceReport = new InvoiceReport();
+        this.invoiceReport.print(this.invoice);
+        this.invoicePdb.addInvoice(this.invoice);
+        this.invoiceReport = null;
+        this.reSetAllForms(invoiceForm,tableRowForm);
+        }
+        else{
+            alert("No items added to Invoice");
+        }
+
       }
 
     }
-    cancelInvoice(invoiceForm:NgForm){
-      this.invoiceReport.print(this.invoice);
+    cancelInvoice(invoiceForm:NgForm,tableRowForm:NgForm){
+      if(confirm("Do you want to cancel")){
+          console.log( "cancelling");
+          this.reSetAllForms(invoiceForm,tableRowForm);
+      }
+    }
+
+    reSetAllForms(invoiceForm:NgForm,tableRowForm:NgForm){
+      this.dataSource = null;
+      this.listData = [];
+      this.invoice = null;
+      this.sgst = 0;
+      this.cgst = 0;
+      this.total = 0;
+      this.grandTotal = 0;
+      this.calculate();
+        tableRowForm.resetForm();
+        this.rowDate.setValue(new Date());
+        this.date.setValue(new Date());
+          this.autoCompleteReset();
+          this.fabricControl.reset();
+          this.millControl.reset();
+          this.tableRowformValid = true;
+          this.customerControl.reset();
+          invoiceForm.resetForm();
     }
 
 }

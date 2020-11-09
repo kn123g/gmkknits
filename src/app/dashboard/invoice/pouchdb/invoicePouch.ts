@@ -35,10 +35,36 @@ export class InvoicePouch{
       }
 
     public addInvoice (invoice : Invoice){
-
+      var promise = this.db
+      .put({
+        _id: ( "invoice:" + ( new Date() ).getTime() ),
+        invoice : invoice,
+      })
+      .then(
+        ( result: any ) : string => {
+         return result;
+        }
+      );
+     return  promise;
 
     }
 
+    public getInvoiceNo(){
+      var invoiceNo :number ;
+       this.db
+      .allDocs({
+        include_docs: true,
+        startkey: "invoice:",
+        endKey: "invoice:\uffff"
+      })
+      .then(
+        ( result: IPouchDBAllDocsResult )  => {
+          console.log (result);
+          invoiceNo = result.total_rows;
+          console.log (invoiceNo);
+        });
+      return invoiceNo + 1;
+    }
 
 
 }

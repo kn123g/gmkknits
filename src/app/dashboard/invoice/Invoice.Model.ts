@@ -10,6 +10,7 @@ export class InvoiceTable{
   weight:number;
   price:number;
   amount:number;
+  invoiceNo : number;
 }
 
 export class Invoice{

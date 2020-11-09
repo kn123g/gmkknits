@@ -9,14 +9,14 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 const routes: Routes = [
   {path : 'login',component : LoginComponent},
   {path : '',component : LoginComponent},
-  {path : 'invoice',component : InvoiceComponent},
   {path : 'home',component : DashboardComponent,canActivate: [AuthGuard],
   children:
   [
     {
-      path : 'invoice',component : InvoiceComponent
+      path : 'invoice',component : InvoiceComponent,canActivate: [AuthGuard],
     }
-  ]}
+  ]},
+  {path : '**',component : LoginComponent},
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
