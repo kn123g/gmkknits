@@ -45,7 +45,7 @@
                    matInput
                    required
                    [formControl]="customerControl"
-                   [matAutocomplete]="autoCustomer">
+                   [matAutocomplete]="autoCustomer" (onSelectionChange)="fetchCustomer()">
             <mat-autocomplete #autoCustomer="matAutocomplete">
               <mat-option *ngFor="let option of filteredCustomerOptions | async"  [value]="option">
                 {{option}}
@@ -255,8 +255,7 @@ rowspan="1" style="font-size: 12px;">
       required
       name="price"
       type="text" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)\d*"
-      matInput placeholder="Price"
-     >
+      matInput placeholder="Price">
       <mat-error color="warn"   *ngIf="price.invalid && !tableRowformValid">Enter Price</mat-error>
     </mat-form-field>
 
@@ -377,8 +376,14 @@ rowHeight ="fit" style="font-size: 12px;">
 </mat-grid-list>
 
       <div class="footerButtonDiv">
+        <input class="footerButtonViewInput" #viewInvoiceNo color="primary"
+        required
+        name="viewInvoiceNo"
+        placeholder="InvoiceNo">
           <button color="primary" type="submit" class="footerButton" (click)="invoiceForm.valid;invoiceForm.ngSubmit.emit();"  mat-stroked-button>Save</button>
           <button color="primary" class="footerButton" (click)="cancelInvoice(invoiceForm,tableRow)" mat-stroked-button>Cancel</button>
+          <button color="primary" type="button" class="footerButtonView" (click)="viewInvoice(viewInvoiceNo.value)"  mat-stroked-button>View</button>
+
       </div>
 </div>
 

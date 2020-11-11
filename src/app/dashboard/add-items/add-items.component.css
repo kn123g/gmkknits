@@ -1,0 +1,70 @@
+
+table {
+  width: 100%;
+}
+
+table {
+  width: 97%;
+  height:  100%;
+}
+
+
+.mat-table-sticky {
+  background: #263238;
+  opacity: 1;
+}
+
+.mat-column-filler {
+  padding: 0px ;
+  font-size: 10px;
+  text-align: center;
+}
+
+.example-sticky-toggle-group {
+  margin: 8px;
+}
+
+
+.example-container {
+  height: 100%;
+  width: 97%;
+  overflow: auto;
+}
+
+.FormControlLarge {
+  min-width: 400px;
+  max-width: 500px;
+}
+
+.mat-header-cell{
+
+  color: aliceblue;
+  font-size: 16px;
+}
+
+.mat-cell-xvsmall {
+  min-width: 40px;
+  max-width: 60px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+.mat-cell-vsmall {
+  min-width: 70px;
+  max-width: 100px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.mat-cell-small {
+  min-width: 70px;
+  max-width: 100px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.mat-cell-large {
+  min-width: 370px;
+  max-width: 400px;
+  box-sizing: border-box;
+  font-size: 12px;
+}

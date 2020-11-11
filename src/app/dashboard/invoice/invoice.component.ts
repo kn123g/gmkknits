@@ -7,6 +7,11 @@ import {  MatTableDataSource } from '@angular/material/table';
 import{InvoiceTable,Invoice} from './Invoice.Model';
 import{InvoicePouch} from './pouchdb/invoicePouch';
 import{InvoiceReport} from './invoice.report';
+import{Router} from '@angular/router';
+import { Fabric,Mill } from '../add-items/Items.Model';
+import {ItemPouch} from '../add-items/pouchdb/itemsPouch';
+import {CustomerModel} from './customer.Model';
+import {CustomerPouch} from './pouchdb/customerPouch';
 
 
 
@@ -31,9 +36,15 @@ export class InvoiceComponent implements OnInit {
   customerControl = new FormControl();
   fabricControl = new FormControl();
   millControl = new FormControl();
-  customerOptions: string[] = ['One', 'Two', 'Three'];
-  fabricOptions: string[] = ['cotton', 'polyester', 'somethng'];
-  millOptions: string[] = ['TCS', 'CSK', 'MI'];
+  customerOptions: string[] =  [];
+  //['One', 'Two', 'Three'];
+  customer : CustomerModel = new CustomerModel() ;
+  fabricOptions: string[] = [];
+  //['cotton', 'polyester', 'somethng'];
+  millOptions: string[] = [];
+  //['TCS', 'CSK', 'MI'];
+  fabricAddRow : Fabric ;
+  millAddRow : Mill ;
   displayedColumns: string[] = ['sno','dc', 'date', 'fabric', 'count','mill','dia','weight','price','amount','edit','delete'];
  // tableDate : Date = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate());
   listData: InvoiceTable[] = [];
@@ -57,11 +68,38 @@ export class InvoiceComponent implements OnInit {
   filteredMillOptions: Observable<string[]>;
   invoiceReport ;
 
-  constructor(public invoicePdb : InvoicePouch) { }
+  constructor(public invoicePdb : InvoicePouch,public items : ItemPouch,public customers : CustomerPouch, private router : Router) { }
 
   ngOnInit() {
-    this.autoCompleteReset();
-    this.invoiceNo = this.invoicePdb.getInvoiceNo();
+    this.invoicePdb.getInvoiceNo().then((result)=> {
+      console.log("invoice number : " +  (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1)));
+   //  this.invoiceNo = (((new Date().getDate() * 100) + (new Date().getMonth() + 1))*10000)  + (result.length +1);
+   this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
+
+    });
+
+    this.items.getAllFabrics().then(result => {
+      result.forEach((data)=>{
+        this.fabricOptions.push(data.doc.fabricName);
+      });
+      this.autoCompleteReset();
+    });
+
+    this.items.getAllMills().then(result => {
+      result.forEach((data)=>{
+        this.millOptions.push(data.doc.millName);
+      });
+      this.autoCompleteReset();
+    });
+
+    this.customers.getAllCustomers().then(result => {
+      result.forEach((data)=>{
+        this.customerOptions.push(data.doc.customer);
+      });
+      this.autoCompleteReset();
+    });
+
+
   }
   private _filterCustomer(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -230,12 +268,18 @@ export class InvoiceComponent implements OnInit {
           this.invoice.customer = this.customerControl.value.trim();
           this.invoice.gstNo = String(invoiceForm.value.gstNo).toUpperCase().trim();
           this.invoice.phoneNo = invoiceForm.value.phoneNo;
+
+          this.customer.customer= this.customerControl.value.trim();
+          this.customer.gstNo= String(invoiceForm.value.gstNo).toUpperCase().trim();
+          this.customer.phoneNo = invoiceForm.value.phoneNo;
           if(invoiceForm.value.address == null || invoiceForm.value.address.trim() =="")
           {
             this.invoice.address = "";
+            this.customer.address = "";
           }
           else{
             this.invoice.address = invoiceForm.value.address.trim();
+            this.customer.address = invoiceForm.value.address.trim();
           }
           if(invoiceForm.value.job == null || invoiceForm.value.job.trim() =="")
           {
@@ -268,11 +312,24 @@ export class InvoiceComponent implements OnInit {
 
           this.invoiceFormValid = true;
         this.invoiceReport = new InvoiceReport();
-        this.invoiceReport.print(this.invoice);
-        this.invoicePdb.addInvoice(this.invoice);
-        this.invoiceReport = null;
-        this.reSetAllForms(invoiceForm,tableRowForm);
-        }
+        this.invoicePdb.addInvoice(this.invoice).then(result => {
+          if(result.ok){
+            this.invoice.invoiceTable.forEach((row)=> {
+              this.addFabricIfNot(row.fabric);
+              this.addMillIfNot(row.mill);
+              this.addCustomerIfNot();
+            });
+            this.invoiceReport.print(this.invoice);
+            this.invoicePdb.getInvoiceNo().then((result)=> {
+              console.log("invoice number : " + result.length + 1);
+              this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
+            });
+            this.invoiceReport = null;
+            this.reSetAllForms(invoiceForm,tableRowForm);
+          }
+        });
+
+      }
         else{
             alert("No items added to Invoice");
         }
@@ -307,4 +364,99 @@ export class InvoiceComponent implements OnInit {
           invoiceForm.resetForm();
     }
 
+    addFabricIfNot(newfabric : string){
+      this.fabricAddRow =
+          {
+          sno: this.fabricOptions.length + 1,
+          fabric: newfabric,
+          };
+          this.items.getFabrics(this.fabricAddRow.fabric).then(result => {
+            if (result.length == 0)
+            {
+               this.items.addFabricToDoc(this.fabricAddRow).then(result => {
+                    if(result.ok){
+                      console.log("added " + newfabric);
+                      this.fabricOptions.push(newfabric);
+                      this.autoCompleteReset();
+                    }
+              });
+            }
+
+          });
+       }
+
+       addMillIfNot(newmill : string){
+        this.millAddRow =
+            {
+            sno: this.millOptions.length + 1,
+            mill: newmill,
+            };
+            this.items.getMills(this.millAddRow.mill).then(result => {
+              if (result.length == 0)
+              {
+                 this.items.addMillToDoc(this.millAddRow).then(result => {
+                      if(result.ok){
+                        console.log("added " + newmill);
+                        this.millOptions.push(newmill);
+                        this.autoCompleteReset();
+                      }
+                });
+              }
+
+            });
+         }
+
+         addCustomerIfNot(){
+
+              this.customers.getCustomer(this.customer.customer).then(result => {
+                if (result.length == 0)
+                {
+                   this.customers.addCustomerToDoc(this.customer).then(addResult => {
+                        if(addResult.ok){
+                          console.log("added " + this.customer);
+                          this.customerOptions.push(this.customer.customer);
+                          this.autoCompleteReset();
+                        }
+                  });
+                }
+                else{
+                  console.log("into deleting proccess " + this.customer);
+                  this.customers.deleteCustomer(result[0].doc).then(result => {
+
+                    if(result.ok){
+                      console.log("deleted " + this.customer);
+                      this.customers.addCustomerToDoc(this.customer).then(result => {
+                        if(result.ok){
+                          console.log("deleted and added " + this.customer);
+                           this.customerOptions.push(this.customer.customer);
+                           this.autoCompleteReset();
+                        }
+                      });
+                    }
+                  });
+                }
+
+              });
+           }
+
+          public fetchCustomer(){
+            console.log("value change triggered");
+          }
+         public viewInvoice (invoiceNo : number){
+           this.invoicePdb.getInvoice(invoiceNo).then((resultInvoice)=>{
+             if(resultInvoice.length > 0){
+              console.log(resultInvoice);
+              this.invoice = new Invoice();
+              this.invoiceReport = new InvoiceReport();
+              this.invoice = resultInvoice[0].doc.invoice;
+              this.invoiceReport.print(this.invoice);
+              console.log(this.invoice);
+              this.invoiceReport = null;
+             }
+             else{
+                alert("Invoice Record Not found");
+             }
+
+           });
+          }
 }

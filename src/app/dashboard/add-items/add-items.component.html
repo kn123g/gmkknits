@@ -1,0 +1,116 @@
+
+<mat-grid-list  cols="6" rowHeight="70px">
+  <mat-grid-tile
+  colspan="3" rowspan="1" style="font-size: 12px;" >
+  <form (submit)="addFabric(fabricTableRow)" #fabricTableRow="ngForm">
+    <mat-form-field class="FormControlLarge" appearance="outline">
+      <mat-label>Fabric</mat-label>
+      <input color="primary"
+      #fabric="ngModel"
+      ngModel
+      required
+      name="fabric"
+      matInput placeholder="Fabric">
+      <mat-error color="warn"  *ngIf="fabric.invalid">Enter Fabric</mat-error>
+    </mat-form-field>
+      <button mat-mini-fab color="warn" type="submit" >
+        <mat-icon>add</mat-icon>
+      </button>
+  </form>
+  </mat-grid-tile>
+  <mat-grid-tile
+  colspan="3" rowspan="1" style="font-size: 12px;" >
+  <form (submit)="addMill(millTableRow)" #millTableRow="ngForm">
+    <mat-form-field class="FormControlLarge" appearance="outline">
+      <mat-label>Mill</mat-label>
+      <input color="primary"
+      #mill="ngModel"
+      ngModel
+      required
+      name="mill"
+      matInput placeholder="Mill">
+      <mat-error color="warn"  *ngIf="mill.invalid">Enter Mill</mat-error>
+    </mat-form-field>
+      <button mat-mini-fab color="warn" type="submit" >
+        <mat-icon>add</mat-icon>
+      </button>
+  </form>
+  </mat-grid-tile>
+  <mat-grid-tile
+  colspan="3" rowspan="5" style="font-size: 12px;" >
+
+  <div class="example-container" >
+    <mat-table [dataSource]="fabricDataSource" matSort >
+      <ng-container matColumnDef="sno">
+          <mat-header-cell class="mat-cell-vsmall"  *matHeaderCellDef mat-sort-header>Sno</mat-header-cell>
+          <mat-cell class="mat-cell-vsmall" *matCellDef="let element">{{element.sno}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fabric">
+              <mat-header-cell  class="mat-cell-large" *matHeaderCellDef mat-sort-header>Dc</mat-header-cell>
+              <mat-cell  class="mat-cell-large" *matCellDef="let element">{{element.fabric}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <mat-header-cell class="mat-cell-xvsmall" *matHeaderCellDef>Edit</mat-header-cell>
+        <mat-cell class="mat-cell-xvsmall" *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="editFabric(row.fabric,fabricTableRow)" ><mat-icon>edit_outline</mat-icon></button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell class="mat-cell-xvsmall" *matHeaderCellDef>Delete</mat-header-cell>
+        <mat-cell class="mat-cell-xvsmall" *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="deleteFabric(row.fabric)" >
+        <mat-icon>delete_outline</mat-icon>
+            </button>
+        </mat-cell>
+      </ng-container>
+
+    <mat-header-row *matHeaderRowDef="fabricDisplayedColumns;sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: fabricDisplayedColumns;"></mat-row>
+
+</mat-table>
+  </div>
+
+  </mat-grid-tile>
+
+  <mat-grid-tile
+  colspan="3" rowspan="5" style="font-size: 12px;">
+
+  <div class="example-container">
+    <mat-table [dataSource]="millDataSource" matSort >
+      <ng-container matColumnDef="sno">
+          <mat-header-cell class="mat-cell-vsmall"  *matHeaderCellDef mat-sort-header>Sno</mat-header-cell>
+          <mat-cell class="mat-cell-vsmall" *matCellDef="let element">{{element.sno}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="mill">
+              <mat-header-cell  class="mat-cell-large" *matHeaderCellDef mat-sort-header>Dc</mat-header-cell>
+              <mat-cell  class="mat-cell-large" *matCellDef="let element">{{element.mill}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <mat-header-cell class="mat-cell-xvsmall" *matHeaderCellDef>Edit</mat-header-cell>
+        <mat-cell class="mat-cell-xvsmall" *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="editMill(row.mill,millTableRow)" ><mat-icon>edit_outline</mat-icon></button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell class="mat-cell-xvsmall" *matHeaderCellDef>Delete</mat-header-cell>
+        <mat-cell class="mat-cell-xvsmall" *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="deleteMill(row.mill)" >
+        <mat-icon>delete_outline</mat-icon>
+            </button>
+        </mat-cell>
+      </ng-container>
+
+    <mat-header-row *matHeaderRowDef="millDisplayedColumns;sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: millDisplayedColumns;"></mat-row>
+
+  </mat-table>
+  </div>
+
+  </mat-grid-tile>
+</mat-grid-list>

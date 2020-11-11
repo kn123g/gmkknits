@@ -50,21 +50,36 @@ export class InvoicePouch{
     }
 
     public getInvoiceNo(){
-      var invoiceNo :number ;
-       this.db
-      .allDocs({
-        include_docs: true,
-        startkey: "invoice:",
-        endKey: "invoice:\uffff"
-      })
-      .then(
-        ( result: IPouchDBAllDocsResult )  => {
-          console.log (result);
-          invoiceNo = result.total_rows;
-          console.log (invoiceNo);
-        });
-      return invoiceNo + 1;
+      var promise = this.db
+        .allDocs({
+          include_docs: false,
+          startkey: 'invoice:',
+          endkey: 'invoice:\ufff0'
+        })
+        .then(
+          ( result: IPouchDBAllDocsResult ) : any[] => {
+            console.log(result);
+            return result.rows;
+          }
+        );
+      //console.log(promise);
+      return promise;
     }
 
+    public getInvoice(invoiceNo : number){
+      var promise = this.db
+      .allDocs({
+        include_docs: true,
+        startkey: 'invoice:',
+        endkey: 'invoice:\ufff0'
+      })
+      .then(
+        ( result: IPouchDBAllDocsResult ) : any[] => {
+          //console.log(result);
+          return result.rows.filter(row  =>
+            row.doc.invoice.invoiceNo == invoiceNo);
 
+         });
+         return promise;
+        }
 }

@@ -4,6 +4,7 @@ import {AuthGuard} from './auth/auth-guard';
 import {LoginComponent} from './auth/login/login.component';
 import {InvoiceComponent} from './dashboard/invoice/invoice.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {AddItemsComponent} from './dashboard/add-items/add-items.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,9 @@ const routes: Routes = [
   [
     {
       path : 'invoice',component : InvoiceComponent,canActivate: [AuthGuard],
+    },
+    {
+      path : 'addItems',component : AddItemsComponent,canActivate: [AuthGuard]
     }
   ]},
   {path : '**',component : LoginComponent},

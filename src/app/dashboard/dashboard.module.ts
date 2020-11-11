@@ -7,9 +7,10 @@ import {FormsModule} from '@angular/forms';
 import{DashboardRoutingModule} from './dashboard-routing.module';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { FlexLayoutModule } from '../../../node_modules/@angular/flex-layout';
+import { AddItemsComponent } from './add-items/add-items.component';
 
 @NgModule({
-  declarations: [ DashboardComponent, InvoiceComponent],
+  declarations: [ DashboardComponent, InvoiceComponent, AddItemsComponent],
   imports:[AngularMaterialModule,CommonModule,FormsModule,AppRoutingModule,DashboardRoutingModule,FlexLayoutModule],
   exports : [DashboardComponent,DashboardRoutingModule,InvoiceComponent,FlexLayoutModule]
 })
