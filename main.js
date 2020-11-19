@@ -1,4 +1,5 @@
 const electron = require('electron');
+const getCurrentWindow = electron.getCurrentWindow;
 const globalShortcut = electron.globalShortcut
 //***//
 function createWindow () {
@@ -7,23 +8,27 @@ function createWindow () {
 }
 
 const {app,BrowserWindow} = electron;
+const reload = ()=> getCurrentWindow().reload();
+
 app.on('ready',()=>{
-  const mainWindow = new BrowserWindow();
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    icon: __dirname + '/appLogo.png'
+  });
 
   mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
 
-  globalShortcut.register('f5', function() {
-		console.log('f5 is pressed')
-		mainWindow.reload();
-	});
-	globalShortcut.register('CommandOrControl+R', function() {
-		console.log('CommandOrControl+R is pressed')
-		mainWindow.reload();
-  });
+  globalShortcut.register('f5',reload);
+  globalShortcut.register('CommandOrControl+R', reload);
+  globalShortcut.register('CommandOrControl+R', reload);
+  globalShortcut.register('CommandOrControl+U', reload);
+  globalShortcut.register('Alt+CommandOrControl+I',reload);
+  globalShortcut.register('Alt+CommandOrControl+R',reload);
   // mainWindow.on('closed', function () {
   //   mainWindow = null
   // });
- // mainWindow.setMenu(null);
+ mainWindow.setMenu(null);
  const isWindows = process.platform === 'mainWindow32';
   let needsFocusFix = false;
   let triggeringProgrammaticBlur = false;
