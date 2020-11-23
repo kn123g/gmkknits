@@ -3,6 +3,10 @@ import {  MatTableDataSource } from '@angular/material/table';
 import {Fabric,Mill} from './Items.Model';
 import { NgForm } from '@angular/forms';
 import {ItemPouch} from './pouchdb/itemsPouch';
+import {DialogFabricFoundElementsDialog,DialogMillFoundElementsDialog}
+from '../../dialog/DialogElementsDialog';
+import {MatDialog} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-add-items',
@@ -20,7 +24,7 @@ export class AddItemsComponent implements OnInit {
   millDataSource : MatTableDataSource<Mill>;
   milllistData: Mill[] = [];
   millAddRow : Mill ;
-  constructor(private items : ItemPouch) { }
+  constructor(private items : ItemPouch,public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -74,7 +78,8 @@ export class AddItemsComponent implements OnInit {
               });
             }
             else{
-              alert("Fabric already exist, Please add new one or edit existing one");
+              this.dialog.open(DialogFabricFoundElementsDialog);
+              //alert("Fabric already exist, Please add new one or edit existing one");
             }
           });
 
@@ -149,7 +154,8 @@ export class AddItemsComponent implements OnInit {
               });
             }
             else{
-              alert("Mill already exist, Please add new one or edit existing one");
+              this.dialog.open(DialogMillFoundElementsDialog);
+              //alert("Mill already exist, Please add new one or edit existing one");
             }
           });
 

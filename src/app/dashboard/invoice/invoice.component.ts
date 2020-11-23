@@ -12,7 +12,9 @@ import { Fabric,Mill } from '../add-items/Items.Model';
 import {ItemPouch} from '../add-items/pouchdb/itemsPouch';
 import {CustomerModel} from './customer.Model';
 import {CustomerPouch} from './pouchdb/customerPouch';
-
+import {MatDialog} from '@angular/material/dialog';
+import {DialogInvoiceNotFoundElementsDialog,DialogNoItemsAddedElementsDialog,
+  DialogCancelConfirmationElementsDialog,DialogLicenseElementsDialog} from '../../dialog/DialogElementsDialog';
 
 
 @Component({
@@ -34,6 +36,9 @@ export class InvoiceComponent implements OnInit {
   rowPrice : number ;
   rowCount : number =1;
   customerControl = new FormControl();
+  customerGSTNo : string;
+  customerAddress : string;
+  customerPhoneNo : string;
   fabricControl = new FormControl();
   millControl = new FormControl();
   customerOptions: string[] =  [];
@@ -50,6 +55,7 @@ export class InvoiceComponent implements OnInit {
   listData: InvoiceTable[] = [];
   invoice  : Invoice ;
   invoiceNo : number;
+  invoiceLicenseNo : number;
   // = [
   //  {sno: 1, dc: "dc",date: this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
   //    weight:4,price:600000,amount:1000000},
@@ -68,14 +74,18 @@ export class InvoiceComponent implements OnInit {
   filteredMillOptions: Observable<string[]>;
   invoiceReport ;
 
-  constructor(public invoicePdb : InvoicePouch,public items : ItemPouch,public customers : CustomerPouch, private router : Router) { }
+  constructor(public invoicePdb : InvoicePouch,public items : ItemPouch,
+    public customers : CustomerPouch, private router : Router,public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.customerGSTNo="";
+    this.customerAddress ="";
+    this.customerPhoneNo ="";
     this.invoicePdb.getInvoiceNo().then((result)=> {
       console.log("invoice number : " +  (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1)));
    //  this.invoiceNo = (((new Date().getDate() * 100) + (new Date().getMonth() + 1))*10000)  + (result.length +1);
    this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
-
+      this.invoiceLicenseNo  = result.length;
     });
 
     this.items.getAllFabrics().then(result => {
@@ -319,7 +329,7 @@ export class InvoiceComponent implements OnInit {
               this.addMillIfNot(row.mill);
               this.addCustomerIfNot();
             });
-            this.invoiceReport.print(this.invoice);
+            this.checkLicense();
             this.invoicePdb.getInvoiceNo().then((result)=> {
               console.log("invoice number : " + result.length + 1);
               this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
@@ -331,17 +341,27 @@ export class InvoiceComponent implements OnInit {
 
       }
         else{
-            alert("No items added to Invoice");
+          this.dialog.open(DialogNoItemsAddedElementsDialog);
+          //  alert("No items added to Invoice");
         }
 
       }
 
     }
     cancelInvoice(invoiceForm:NgForm,tableRowForm:NgForm){
-      if(confirm("Do you want to cancel")){
-          console.log( "cancelling");
-          this.reSetAllForms(invoiceForm,tableRowForm);
-      }
+      console.log();
+      this.reSetAllForms(invoiceForm,tableRowForm);
+     // const dialogRef =  this.dialog.open(DialogCancelConfirmationElementsDialog);
+     // dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+     //   if (confirmed) {
+     //     this.reSetAllForms(invoiceForm,tableRowForm);
+     //   }
+     // });
+      //confirm("Do you want to cancel")
+      //if( this.dialog.DialogCancelConfirmationElementsDialog.o){
+        //  console.log( "cancelling");
+        //  this.reSetAllForms(invoiceForm,tableRowForm);
+      //}
     }
 
     reSetAllForms(invoiceForm:NgForm,tableRowForm:NgForm){
@@ -439,8 +459,20 @@ export class InvoiceComponent implements OnInit {
               });
            }
 
-          public fetchCustomer(){
-            console.log("value change triggered");
+          public fetchCustomer(customer : string){
+              console.log("Customer" + customer);
+              this.customers.getCustomer(customer).then((fetchedCustomer)=>{
+                  if(fetchedCustomer.length > 0)
+                  {
+                    console.log(fetchedCustomer);
+                    console.log(fetchedCustomer[0].doc.gstNo);
+                    this.customerGSTNo = fetchedCustomer[0].doc.gstNo;
+                    this.customerAddress = fetchedCustomer[0].doc.address;
+                    this.customerPhoneNo = fetchedCustomer[0].doc.phoneNo;
+                  }
+
+              });
+
           }
          public viewInvoice (invoiceNo : number){
            this.invoicePdb.getInvoice(invoiceNo).then((resultInvoice)=>{
@@ -449,14 +481,22 @@ export class InvoiceComponent implements OnInit {
               this.invoice = new Invoice();
               this.invoiceReport = new InvoiceReport();
               this.invoice = resultInvoice[0].doc.invoice;
-              this.invoiceReport.print(this.invoice);
+              this.checkLicense();
               console.log(this.invoice);
               this.invoiceReport = null;
              }
              else{
-                alert("Invoice Record Not found");
+              this.dialog.open(DialogInvoiceNotFoundElementsDialog);
+               // alert("Invoice Record Not found");
              }
 
            });
+          }
+
+          private checkLicense(){
+            if(this.invoiceLicenseNo<200)
+            {
+              this.invoiceReport.print(this.invoice);
+            }
           }
 }

@@ -45,8 +45,8 @@
                    matInput
                    required
                    [formControl]="customerControl"
-                   [matAutocomplete]="autoCustomer" (onSelectionChange)="fetchCustomer()">
-            <mat-autocomplete #autoCustomer="matAutocomplete">
+                   [matAutocomplete]="autoCustomer" >
+            <mat-autocomplete #autoCustomer="matAutocomplete" (optionSelected)='fetchCustomer($event.option.value)'>
               <mat-option *ngFor="let option of filteredCustomerOptions | async"  [value]="option">
                 {{option}}
               </mat-option>
@@ -64,7 +64,7 @@
             <mat-label>GSTIN</mat-label>
             <input matInput
              #gstNo = "ngModel"
-             ngModel
+             [(ngModel)] ="customerGSTNo"
              name="gstNo"
              placeholder="GSTIN" maxlength="15" minlength="15"  required>
             <mat-icon color="primary" matSuffix>add_box</mat-icon>
@@ -81,7 +81,7 @@
             <mat-label>Address</mat-label>
             <textarea
             #address = "ngModel"
-             ngModel
+            [(ngModel)] ="customerAddress"
              name="address"
              placeholder="Address"
              matInput style="height:'77px'"></textarea>
@@ -97,7 +97,7 @@
         <mat-icon color="primary" matSuffix>phone</mat-icon>
         <input  matInput
         #phoneNo = "ngModel"
-        ngModel
+        [(ngModel)] ="customerPhoneNo"
         name="phoneNo"
         required
         type="text" pattern="\d*" maxlength="10" minlength="10"

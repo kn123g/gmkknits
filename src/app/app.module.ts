@@ -5,13 +5,29 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import {AngularMaterialModule} from'./angular-material.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import
+      { DialogInvoiceNotFoundElementsDialog,
+        DialogNoItemsAddedElementsDialog ,
+        DialogFabricFoundElementsDialog,
+        DialogMillFoundElementsDialog,
+        DialogCancelConfirmationElementsDialog,
+        DialogLoginWrongPasswordElementsDialog,
+        DialogLoginWrongUserElementsDialog
+      }
+from './dialog/DialogElementsDialog';
 
 import { HashLocationStrategy,LocationStrategy } from '@angular/common';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,DialogInvoiceNotFoundElementsDialog,
+    DialogNoItemsAddedElementsDialog,
+    DialogFabricFoundElementsDialog,
+    DialogMillFoundElementsDialog,
+    DialogCancelConfirmationElementsDialog,
+    DialogLoginWrongPasswordElementsDialog,
+    DialogLoginWrongUserElementsDialog
   ],
   imports: [
     BrowserModule,

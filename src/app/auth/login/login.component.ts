@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import{AuthService}from '../auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogLoginWrongUserElementsDialog,
+  DialogLoginWrongPasswordElementsDialog}
+from '../../dialog/DialogElementsDialog';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   hide  = true;
   formValid = true;
-  constructor(public authservice  : AuthService) {
+  constructor(public authservice  : AuthService,public dialog: MatDialog) {
 
   }
 
@@ -24,10 +28,25 @@ export class LoginComponent implements OnInit {
       console.log("login.component.ts = > invalid form");
     }
     else{
+
+      if(loginForm.value.username == "arun123")
+      {
       //console.log("login.component.ts = > after login response");
-      this.authservice.createUser(loginForm.value.username,loginForm.value.password);
-      this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
-      loginForm.resetForm();
+      this.authservice.getUser(loginForm.value.username).then((user) =>{
+        if(user.length >0){
+          this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
+        }
+        else{
+          this.authservice.createUser(loginForm.value.username,loginForm.value.password);
+          this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
+        }
+       // loginForm.resetForm();
+      } );
     }
+    else{
+      this.dialog.open(DialogLoginWrongUserElementsDialog);
+      //alert("Wrong User ID");
+    }
+  }
   }
 }

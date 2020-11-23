@@ -38,8 +38,8 @@
       <span class="example-spacer"></span>
       <img src="assets/images/arun.jpg" alt="User Picture" mat-card-avatar class="toolbar-user-image">
       <h2 class='toolbar-user-name'>Arun Kumar</h2>
-      <button mat-icon-button class="example-icon" color="accent"  aria-label="Example icon-button with menu icon">
-        <mat-icon >settings</mat-icon>
+      <button mat-icon-button class="example-icon" (click)="logout()" color="accent"  aria-label="Example icon-button with menu icon">
+        <mat-icon >logout</mat-icon>
       </button>
     </mat-toolbar>
     <div  style="width:100%;">

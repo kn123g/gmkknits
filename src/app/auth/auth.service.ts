@@ -4,6 +4,10 @@ import{Router} from '@angular/router';
 import {UserPouch} from './pouchdb/userPouch'
 import {Subject} from 'rxjs';
 import { compare,compareSync, hash, hashSync } from 'bcryptjs';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogLoginWrongUserElementsDialog,
+  DialogLoginWrongPasswordElementsDialog}
+from '../dialog/DialogElementsDialog';
 
 @Injectable({providedIn : 'root'})
 export class AuthService {
@@ -14,7 +18,7 @@ export class AuthService {
     private tokenTimer: any;
     private userId : string;
 
-    constructor(public userPdb : UserPouch,private router : Router  ){}
+    constructor(public userPdb : UserPouch,private router : Router ,public dialog: MatDialog ){}
 
     getToken(){
       return this.token;
@@ -38,7 +42,7 @@ export class AuthService {
           userid : 'admin123',
           email : email,
           password : password,
-          phoneno : '9809543211'
+          phoneno : '7845578239'
         };
         return this.userPdb.addUser(authData).then(result => {
             console.log(result);
@@ -71,15 +75,20 @@ export class AuthService {
                     }
                     else
                     {
-                      alert("Wrong Password");
+                      this.dialog.open(DialogLoginWrongPasswordElementsDialog);
+                      //alert("Wrong Password");
                     }
                 }
                 else{
-                  alert("User not Found");
+                  this.dialog.open(DialogLoginWrongUserElementsDialog);
+                  //alert("User not Found");
                 }
       } );
     }
 
+    getUser(userId : string){
+      return  this.userPdb.getUser(userId);
+    }
     autoAuthUser() {
 
       const authInformation = this.getAuthData();

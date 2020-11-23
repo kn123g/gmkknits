@@ -74,4 +74,22 @@ export class UserPouch{
       return promise;
     }
 
+
+    public getUser(userid : string) : any {
+      var promise = this.db
+        .allDocs({
+          include_docs: true,
+          startkey: "user:",
+          endKey: "user:\uffff"
+        })
+        .then(
+          ( result: IPouchDBAllDocsResult ) : any[] => {
+            console.log(result);
+            return result.rows.filter(row  => row.doc.userId === userid);
+          }
+        );
+      //console.log(promise);
+      return promise;
+    }
+
 }
