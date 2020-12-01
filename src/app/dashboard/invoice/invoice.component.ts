@@ -165,7 +165,7 @@ export class InvoiceComponent implements OnInit {
         count: tableRow.value.count,
         mill :  this.millControl.value,
         dia: tableRow.value.dia,
-        amount: Number (Number (tableRow.value.price * tableRow.value.weight * tableRow.value.count).toFixed(2)) ,
+        amount: Number (Number (tableRow.value.price * tableRow.value.weight).toFixed(2)) ,
         price: tableRow.value.price,
         weight: tableRow.value.weight
         };

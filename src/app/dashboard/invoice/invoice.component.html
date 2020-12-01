@@ -100,9 +100,10 @@
         [(ngModel)] ="customerPhoneNo"
         name="phoneNo"
         required
-        type="text" pattern="\d*" maxlength="10" minlength="10"
-        placeholder="Phone No"  required >
-        <mat-error color="warn"  *ngIf="phoneNo.invalid && !invoiceFormValid">Enter 10 digit Phone No</mat-error>
+        type="text" 
+        placeholder="Phone No"  required pattern="^(?=.*?[1-9])[0-9()-]+$">
+        <!-- pattern="\d*" maxlength="10" minlength="10" -->
+        <mat-error color="warn"  *ngIf="phoneNo.invalid && !invoiceFormValid">Enter Valid Phone No</mat-error>
       </mat-form-field>
   </mat-grid-tile>
 
@@ -201,7 +202,7 @@ rowspan="1" style="font-size: 12px;">
       [(ngModel)] = "rowCount"
       name="count"
       matInput placeholder="Count"
-      type="text" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)\d*">
+      type="text" >
       <mat-error color="warn"   *ngIf="count.invalid && !tableRowformValid && count.value<1">Please Enter Count</mat-error>
     </mat-form-field>
 
@@ -263,7 +264,7 @@ rowspan="1" style="font-size: 12px;">
       <mat-label>Amount</mat-label>
       <input color="primary"
       #amount="ngModel"
-      [(ngModel)] = "rowPrice * rowWeight * rowCount"
+      [(ngModel)] = "rowPrice * rowWeight"
       required
       type ="number"
       name="amount"

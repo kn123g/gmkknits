@@ -12,7 +12,6 @@
     "electron": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
-
   },
   "private": true,
   "dependencies": {
@@ -78,7 +77,7 @@
     "appId": "com.hobbycorporation.invoice",
     "productName": "Desktop Invoice Application",
     "target": "NSIS",
-    "includePdb":"false",
+    "includePdb": "false",
     "directories": {
       "output": "./build"
     },

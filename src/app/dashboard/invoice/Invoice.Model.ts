@@ -4,7 +4,7 @@ export class InvoiceTable{
   dc: string;
   date: string;
   fabric: string;
-  count: number;
+  count: string;
   mill : string;
   dia:string;
   weight:number;
@@ -20,7 +20,7 @@ export class Invoice{
   gstNo : string;
   address : string;
   customer : string;
-  phoneNo : number;
+  phoneNo : string;
   job : string;
   partyDcNo : string;
   reference : string;

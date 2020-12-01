@@ -28,8 +28,7 @@ export class LoginComponent implements OnInit {
       console.log("login.component.ts = > invalid form");
     }
     else{
-
-      if(loginForm.value.username == "arun123")
+      if(loginForm.value.username == "gmkknits")
       {
       //console.log("login.component.ts = > after login response");
       this.authservice.getUser(loginForm.value.username).then((user) =>{
