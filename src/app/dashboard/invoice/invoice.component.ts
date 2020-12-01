@@ -55,7 +55,6 @@ export class InvoiceComponent implements OnInit {
   listData: InvoiceTable[] = [];
   invoice  : Invoice ;
   invoiceNo : number;
-  invoiceLicenseNo : number;
   // = [
   //  {sno: 1, dc: "dc",date: this.tableDate.toDateString(),fabric: 'string',count: 2,mill : 'string',dia:'string',
   //    weight:4,price:600000,amount:1000000},
@@ -73,6 +72,7 @@ export class InvoiceComponent implements OnInit {
   filteredFabricOptions: Observable<string[]>;
   filteredMillOptions: Observable<string[]>;
   invoiceReport ;
+  year : number;
 
   constructor(public invoicePdb : InvoicePouch,public items : ItemPouch,
     public customers : CustomerPouch, private router : Router,public dialog: MatDialog) { }
@@ -81,11 +81,16 @@ export class InvoiceComponent implements OnInit {
     this.customerGSTNo="";
     this.customerAddress ="";
     this.customerPhoneNo ="";
-    this.invoicePdb.getInvoiceNo().then((result)=> {
-      console.log("invoice number : " +  (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1)));
+    console.log("month number : " + (new Date().getMonth()));
+    this.year = (Number(new Date().getFullYear().toString().substr(-2))) -1 ;
+    if((new Date().getMonth()) > 2){
+      this.year = (Number(new Date().getFullYear().toString().substr(-2))) ;
+    }
+    this.invoicePdb.getInvoiceNo(this.year).then((result)=> {
+      
    //  this.invoiceNo = (((new Date().getDate() * 100) + (new Date().getMonth() + 1))*10000)  + (result.length +1);
-   this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
-      this.invoiceLicenseNo  = result.length;
+   this.invoiceNo = ((this.year * 1000 ) + result.length +1);
+      
     });
 
     this.items.getAllFabrics().then(result => {
@@ -330,9 +335,9 @@ export class InvoiceComponent implements OnInit {
               this.addCustomerIfNot();
             });
             this.checkLicense();
-            this.invoicePdb.getInvoiceNo().then((result)=> {
+            this.invoicePdb.getInvoiceNo(this.year).then((result)=> {
               console.log("invoice number : " + result.length + 1);
-              this.invoiceNo = (( (Number(new Date().getFullYear().toString().substr(-2))) * 10000) + (result.length +1));
+              this.invoiceNo = ((this.year * 1000 ) + result.length +1);
             });
             this.invoiceReport = null;
             this.reSetAllForms(invoiceForm,tableRowForm);
@@ -494,7 +499,7 @@ export class InvoiceComponent implements OnInit {
           }
 
           private checkLicense(){
-            if(this.invoiceLicenseNo<200)
+            if(this.year < 22)
             {
               this.invoiceReport.print(this.invoice);
             }

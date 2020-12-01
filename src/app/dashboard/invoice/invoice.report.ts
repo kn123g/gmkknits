@@ -28,7 +28,7 @@ export class InvoiceReport{
     invoice.invoiceTable.forEach(array=>{
       tableData.push({sno : array.sno,
                       dc:array.dc,
-                      date : array.sno,
+                      date : array.date,
                       fabric : array.fabric,
                       count : array.count,
                       mill : array.mill,

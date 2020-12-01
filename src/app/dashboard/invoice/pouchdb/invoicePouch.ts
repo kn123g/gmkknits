@@ -37,7 +37,7 @@ export class InvoicePouch{
     public addInvoice (invoice : Invoice){
       var promise = this.db
       .put({
-        _id: ( "invoice:" + ( new Date() ).getTime() ),
+        _id: ( "invoice:" + invoice.invoiceNo.toString().substr(0,2) + ":" + ( new Date() ).getTime() ),
         invoice : invoice,
       })
       .then(
@@ -49,12 +49,12 @@ export class InvoicePouch{
 
     }
 
-    public getInvoiceNo(){
+    public getInvoiceNo(year : number){
       var promise = this.db
         .allDocs({
           include_docs: false,
-          startkey: 'invoice:',
-          endkey: 'invoice:\ufff0'
+          startkey: 'invoice:' +  year,
+          endkey: 'invoice:' + year +'\ufff0'
         })
         .then(
           ( result: IPouchDBAllDocsResult ) : any[] => {
@@ -70,8 +70,8 @@ export class InvoicePouch{
       var promise = this.db
       .allDocs({
         include_docs: true,
-        startkey: 'invoice:',
-        endkey: 'invoice:\ufff0'
+        startkey: 'invoice:' +(Number(invoiceNo.toString().substr(2))),
+        endkey: 'invoice:' +(Number(invoiceNo.toString().substr(2))) + '\ufff0'
       })
       .then(
         ( result: IPouchDBAllDocsResult ) : any[] => {
