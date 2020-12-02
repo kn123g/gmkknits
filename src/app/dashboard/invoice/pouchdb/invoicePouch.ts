@@ -70,8 +70,8 @@ export class InvoicePouch{
       var promise = this.db
       .allDocs({
         include_docs: true,
-        startkey: 'invoice:' +(Number(invoiceNo.toString().substr(2))),
-        endkey: 'invoice:' +(Number(invoiceNo.toString().substr(2))) + '\ufff0'
+        startkey: 'invoice:' +(Number(invoiceNo.toString().substr(0,2))),
+        endkey: 'invoice:' +(Number(invoiceNo.toString().substr(0,2))) + '\ufff0'
       })
       .then(
         ( result: IPouchDBAllDocsResult ) : any[] => {

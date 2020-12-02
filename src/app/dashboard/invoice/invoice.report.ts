@@ -96,9 +96,9 @@ export class InvoiceReport{
      this.doc.text( "Phone No", 30,135);
      this.doc.text( this.invoice.phoneNo.toString(),100,135);
      this.doc.text( "Address", 30,150);
-     var splitTitle = this.doc.splitTextToSize(this.invoice.address, 140);
+     var splitTitle = this.doc.splitTextToSize(this.invoice.address, 135);
      this.doc.text(splitTitle,100, 150);
-     this.doc.setLineWidth(0.5);
+     this.doc.setLineWidth(1);
      this.doc.line(25, 195, 420, 195);
      this.doc.line(240,80, 240, 195);
 
@@ -130,7 +130,7 @@ export class InvoiceReport{
        this.tablePosition = 80;
     }
     autoTable (this.doc,{
-      styles: { minCellHeight : 30,valign:'middle',fontSize:8},
+      styles: { minCellHeight : 30,valign:'middle',fontSize:9},
       bodyStyles:{fontStyle:"normal"}, // European countries centered
        body: tableData,
        columns: [
@@ -152,10 +152,10 @@ export class InvoiceReport{
   }
 
   printHeader(){
-    this.doc.setFont("Melbourne");
+    this.doc.setFont("default");
     this.doc.setFontSize(11);
     this.doc.setDrawColor(0,0,0);
-    this.doc.setLineWidth(0.5);
+    this.doc.setLineWidth(1);
     // this.doc.rect(20, 20, this.doc.internal.pageSize.width - 40, this.doc.internal.pageSize.height - 40, 'S');
      this.doc.line(25, 25, 420, 25);
      this.doc.line(25, 25, 25, 600);
@@ -163,26 +163,27 @@ export class InvoiceReport{
      this.doc.line(420, 600, 420, 25);
      this.doc.addImage(this.reportImg.logoImg , 'PNG', 40, 35,35,35);
      this.doc.addImage( this.reportImg.nameImg, 'PNG', 160, 30,  125, 25);
-     this.doc.setFont("Melbourne");
+     this.doc.setFont("default");
      this.doc.setFontSize(14);
      this.doc.text( "Tax Invoice", 350,40);
      this.doc.setFontSize(10);
      this.doc.text( "38/2,Near Kamachi Amman School,Iduvai Main Road,Andipalayam - 641687", 105,60);
      this.doc.text( "GSTTIN No : 33AAQFG8932M1ZR PAN No : AAQFG8932M", 125,68);
      this.doc.text( "Phone No : +91 7845578239 ", 181,76);
-     this.doc.setLineWidth(1);
-     this.doc.setDrawColor(255,153,51);
+     this.doc.setLineWidth(1.5);
+     this.doc.setDrawColor(0,0,0);
+     //this.doc.setDrawColor(255,153,51); // Orange
      this.doc.line(25, 80, 420, 80);
   }
 
   footerPrint(){
-    this.doc.setLineWidth(0.5);
-    this.doc.setFont("Melbourne","bold");
+    this.doc.setLineWidth(1);
+    this.doc.setFont("default","bold");
     this.doc.setFontSize(11);
     this.doc.setDrawColor(0,0,0);
     this.doc.line(25, 420, 420, 420);
     this.doc.text( "Bank Details", 30,430);
-    this.doc.setFont("Melbourne","normal");
+    this.doc.setFont("default","normal");
     this.doc.setFontSize(12);
     this.doc.text( "TOTAL", 280,435);
     this.doc.text( this.invoice.total.toString(), 360,435);
@@ -195,13 +196,13 @@ export class InvoiceReport{
     this.doc.text( "GRAND TOTAL", 280,495);
     this.doc.text( this.invoice.grandTotal.toString(), 360,495);
     this.doc.line(25, 505, 420, 505);
-    this.doc.setFont("Melbourne","normal");
-    this.doc.setFontSize(8);
+    this.doc.setFont("default","normal");
+    this.doc.setFontSize(9);
     this.doc.text( "Remarks", 35,575);
     this.doc.text( "1. No Purchase or Sales involved, Labour Charges Only", 35,585);
     this.doc.text( "2. Subject to Tirupur Jurisdiction Only", 35,592);
-    this.doc.setFont("Melbourne","normal");
-    this.doc.setFontSize(11);
+    this.doc.setFont("default","bold");
+    this.doc.setFontSize(10);
     this.doc.text( "For GMK KNITS", 310,565);
   }
   savePDF(){
@@ -211,6 +212,6 @@ export class InvoiceReport{
     window.open(fileURL);
     //this.doc.output( "datauristring",{filename:'Invoice_' + this.invoice.invoiceNo + Date + '.pdf'});
     //this.doc.output('bloburl', {filename: 'myFileName.pdf'}, '_blank');
-    this.doc.save('table.pdf');
+    this.doc.save('invoice_'+ this.invoice.invoiceNo + '.pdf');
   }
 }
