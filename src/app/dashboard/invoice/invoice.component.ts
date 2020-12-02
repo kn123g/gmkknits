@@ -503,5 +503,8 @@ export class InvoiceComponent implements OnInit {
             {
               this.invoiceReport.print(this.invoice);
             }
+            else{
+              this.dialog.open(DialogLicenseElementsDialog);
+            }
           }
 }

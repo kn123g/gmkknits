@@ -5,12 +5,20 @@ mat-card{
   padding: 0px;
 }
 .body{
-  padding: 140px  50px  150px  50px ;
+  padding-top: 120px ;
+  padding-bottom: 120px  ;
+  padding-left : 150px  ;
+  padding-right:50px ;
   background-image: url("../../../assets/images/home_screen_bg.jpg");
   background-repeat: no-repeat;
-  background-size: 800px 660px;
+  background-size: 800px 600px;
   position: relative;
   height: 100%;
+}
+.slogan{
+  color:#D84315; font-family: 'Helvetica Neue', sans-serif; font-size: 45px; 
+  font-weight: bold;
+   letter-spacing: -1px; line-height: 1; text-align: center;  padding: 50px 130px 0px ; 
 }
 .usercard{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

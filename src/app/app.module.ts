@@ -12,7 +12,8 @@ import
         DialogMillFoundElementsDialog,
         DialogCancelConfirmationElementsDialog,
         DialogLoginWrongPasswordElementsDialog,
-        DialogLoginWrongUserElementsDialog
+        DialogLoginWrongUserElementsDialog,
+        DialogLicenseElementsDialog
       }
 from './dialog/DialogElementsDialog';
 
@@ -27,7 +28,8 @@ import { HashLocationStrategy,LocationStrategy } from '@angular/common';
     DialogMillFoundElementsDialog,
     DialogCancelConfirmationElementsDialog,
     DialogLoginWrongPasswordElementsDialog,
-    DialogLoginWrongUserElementsDialog
+    DialogLoginWrongUserElementsDialog,
+    DialogLicenseElementsDialog
   ],
   imports: [
     BrowserModule,
