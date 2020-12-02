@@ -76,12 +76,22 @@
   "build": {
     "appId": "com.hobbycorporation.invoice",
     "productName": "Desktop Invoice Application",
-    "target": "NSIS",
-    "includePdb": "false",
-    "directories": {
-      "output": "./build"
+    "files": ["**/*", "dist/**/*"],
+
+  "directories": {
+      "output": "release",
+      "buildResources": "dist"
+    },
+    "asar":false,
+    "win": {
+
+      "target": [
+        "nsis"
+      ]
     },
     "nsis": {
+      "runAfterFinish": true,
+      "license":"LICENSE",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
