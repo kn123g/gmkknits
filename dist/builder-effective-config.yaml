@@ -1,0 +1,12 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.hobbycorporation.invoice
+productName: Desktop Invoice Application
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
+electronVersion: 10.1.2
