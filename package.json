@@ -87,7 +87,8 @@
 
       "target": [
         "nsis"
-      ]
+      ],
+      "icon" : "./src/assets/images/gmkknits_logo_ico.ico"
     },
     "nsis": {
       "runAfterFinish": true,
