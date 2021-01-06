@@ -318,8 +318,11 @@ export class InvoiceComponent implements OnInit {
             this.invoice.reference =invoiceForm.value.reference.trim() ;
           }
           this.invoice.invoiceTable = this.listData;
-          this.invoice.sgst = Number(this.getSGST() );
-          this.invoice.cgst = Number(this.getCGST() );
+         // this.invoice.sgst = Number(this.getSGST() );
+        //  this.invoice.cgst = Number(this.getCGST() );
+          
+          this.invoice.sgst = this.sgst;
+          this.invoice.cgst = this.cgst;
           this.invoice.total = this.total;
           this.invoice.grandTotal = Math.round(this.grandTotal);
 
