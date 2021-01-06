@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import {AngularMaterialModule} from'./angular-material.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import
       { DialogInvoiceNotFoundElementsDialog,
         DialogNoItemsAddedElementsDialog ,
@@ -36,7 +37,8 @@ import { HashLocationStrategy,LocationStrategy } from '@angular/common';
     AppRoutingModule,
     AuthModule,
     AngularMaterialModule,
-    DashboardModule
+    DashboardModule,
+    HttpClientModule
   ],
   providers: [{provide:LocationStrategy,useClass : HashLocationStrategy}],
   bootstrap: [AppComponent]

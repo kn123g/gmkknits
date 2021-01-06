@@ -8,7 +8,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogLoginWrongUserElementsDialog,
   DialogLoginWrongPasswordElementsDialog}
 from '../dialog/DialogElementsDialog';
-
+import {InvoicePouch} from '../dashboard/invoice/pouchdb/invoicePouch';
+import {InvoiceReplicationService} from '../dashboard/invoice/invoiceReplication/invoiceReplication';
 @Injectable({providedIn : 'root'})
 export class AuthService {
 
@@ -17,8 +18,9 @@ export class AuthService {
     private userAuthentication = false;
     private tokenTimer: any;
     private userId : string;
+    private replicationTimer ;
 
-    constructor(public userPdb : UserPouch,private router : Router ,public dialog: MatDialog ){}
+    constructor(public userPdb : UserPouch,private router : Router ,private replica : InvoiceReplicationService,public dialog: MatDialog,public invoicePdb : InvoicePouch ){}
 
     getToken(){
       return this.token;
@@ -72,6 +74,9 @@ export class AuthService {
                         console.log(expirationDate);
                       this.saveAuthData(token, expirationDate,this.userId);
                       this.router.navigate(['/home']);
+                      this.replicationTimer = setInterval(()=>{
+                        this.replica.replicateInvoice();
+                      },5000);
                     }
                     else
                     {
@@ -114,6 +119,7 @@ export class AuthService {
       this.authStatusListener.next(false);
       this.userId = null;
       clearTimeout(this.tokenTimer);
+      clearTimeout(this.replicationTimer);
       this.clearAuthData();
       this.router.navigate(['/']);
   }
@@ -150,6 +156,4 @@ export class AuthService {
         userId : userId
       }
     }
-
-
 }

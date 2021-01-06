@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogLoginWrongUserElementsDialog,
   DialogLoginWrongPasswordElementsDialog}
 from '../../dialog/DialogElementsDialog';
+import {InvoicePouch} from '../../dashboard/invoice/pouchdb/invoicePouch';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   hide  = true;
   formValid = true;
-  constructor(public authservice  : AuthService,public dialog: MatDialog) {
+  constructor(private invoicePdb : InvoicePouch,public authservice  : AuthService,public dialog: MatDialog) {
 
   }
 
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
         else{
           this.authservice.createUser(loginForm.value.username,loginForm.value.password);
           this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
+          this.invoicePdb.createInvoiceReplicationDate();
         }
        // loginForm.resetForm();
       } );

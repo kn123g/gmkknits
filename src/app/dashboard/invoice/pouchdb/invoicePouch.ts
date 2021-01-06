@@ -2,6 +2,7 @@ import { compare, hash, hashSync } from 'bcryptjs';
 import { InvoiceTable,Invoice } from '../Invoice.Model';
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
+import { sync } from 'pouchdb';
 declare function require(name:string);
 const PouchDB = require('pouchdb').default;
 
@@ -25,6 +26,7 @@ interface IPouchDBRow {
 export class InvoicePouch{
 
     private db : any;
+    public replicationDateId ;
     constructor(private router : Router) {
         this.db = new PouchDB(
                 "gmkknits-pouchdb",
@@ -81,5 +83,71 @@ export class InvoicePouch{
 
          });
          return promise;
+        }
+
+        public getLastInvoiceReplicationDate(){ 
+          var returnResult ;
+         // debugger;
+         var promise = this.db
+          .allDocs({
+            include_docs: true,
+            startkey: 'invoiceReplication:' ,
+            endkey: 'invoiceReplication:'+ '\ufff0'
+          })
+          .then(
+            ( result: IPouchDBAllDocsResult ) : any[] => {
+              returnResult = [...result.rows];
+                this.replicationDateId = returnResult[0].id;
+              return  returnResult ;
+              }
+              );
+             return promise;
+            }
+        public getInvoicesToBeReplicated(){ 
+
+         return( this.getLastInvoiceReplicationDate().then(date => {
+
+           return ( this.db
+          .allDocs({
+            include_docs: true,
+            startkey: 'invoice:' ,
+            endkey: 'invoice:' + '\ufff0'
+          })
+          .then(
+            ( result: IPouchDBAllDocsResult ) : any[] => {
+              //console.log(result);
+              if(date.length ==0){
+                return result.rows;
+              }
+              else{
+               return result.rows.filter(row  => {
+                 console.log( new Date(row.doc.invoice.invoiceDate));
+                 console.log( new Date(date[0].doc.invoiceReplicatedDate));
+                 console.log(new Date(row.doc.invoice.invoiceDate) > new Date (date[0].doc.invoiceReplicatedDate));
+                return new Date(row.doc.invoice.invoiceDate) > new Date (date[0].doc.invoiceReplicatedDate)
+                } );
+              }
+             }));
+          }));
+
+        }
+
+        public updateReplicationDate(date : any){
+          this.db.get(this.replicationDateId)
+                  .then(( updateResult: any )  => {
+                    updateResult.invoiceReplicatedDate= date;
+                      this.db.put( updateResult ).then(data => {
+                        console.log(data);
+                      }) ;
+                  } );
+        }
+        public createInvoiceReplicationDate(){
+          
+          var date = new Date(); 
+          date.setDate(date.getDate() - 1);
+          this.db.put({
+            _id: ( "invoiceReplication:" + ( new Date(date) ).getTime() ),
+            invoiceReplicatedDate : String(new Date(date)),
+            });
         }
 }
