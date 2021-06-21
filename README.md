@@ -1,3 +1,6 @@
+#electron app run
+electron .
+
 # Generate Exe file
 ng build --prod
 electron-builder -w
