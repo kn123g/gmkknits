@@ -1,40 +1,39 @@
-#username of application should be : gmkknits
-#password can be any 
+# Credentials
 
+username of application should be : gmkknits , password can be any 
 
-#Install electron
+# Install node package and electron
+npm i
 npm i electron -g
 
-#electron app run
+# Build project 
+ng build --prod
+
+# Electron app run
 electron .
 
 # Generate Exe file
 ng build --prod
 electron-builder -w
 
-#package electron app
+# package electron app
 ng build --prod
 electron-packager .
 electron-packager . --platform=win32 --arch=x64 gmkknits
 
-#MSI installer file creation
-  #install below software
+# MSI installer file creation
+## install below software
   https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe
-  #press install button on wix installed app
-  #find bin directory and add to path environment variable(C:\Program Files (x86)\WiX Toolset v3.11\bin)
-  #verify by below command
+  press install button on wix installed app
+   find bin directory and add to path environment variable(C:\Program Files (x86)\WiX Toolset v3.11\bin)
+## verify by below command
   candle
-  #install electron-wix-msi package
+## install electron-wix-msi package
   npm install electron-wix-msi --save-dev
-  #run build_installer.js
+## Run build_installer
   node build_installer.js
   
   
-  
-
-
-
-
 # GmkknitsInvoiceElectron
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.3.
@@ -51,14 +50,3 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
