@@ -20,7 +20,7 @@
     "@types/pouchdb": "^6.4.0",
     "bcryptjs": "^2.4.3",
     "font-awesome": "^4.7.0",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "invoice-generator": "^0.3.0",
     "jspdf": "^2.1.1",
     "jspdf-autotable": "^3.5.13",
