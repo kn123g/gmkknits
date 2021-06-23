@@ -34,10 +34,13 @@ export class LoginComponent implements OnInit {
       //console.log("login.component.ts = > after login response");
       this.authservice.getUser(loginForm.value.username).then((user) =>{
         if(user.length >0){
+          console.log("loggin i user");
           this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
         }
         else{
+          console.log("creating user");
           this.authservice.createUser(loginForm.value.username,loginForm.value.password);
+          console.log("logging in user");
           this.authservice.loginUser(loginForm.value.username,loginForm.value.password);
           this.invoicePdb.createInvoiceReplicationDate();
         }

@@ -3,10 +3,13 @@
 # compiled output
 #/dist
 /tmp
+/out
 /out-tsc
 /build
 /gmkknits-invoice-electron-win32-x64
+/gmkknits-invoice-electron-win32-x64
 /release
+/windows_installer
 # Only exists if Bazel was run
 /bazel-out
 

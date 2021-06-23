@@ -56,5 +56,6 @@ app.on('ready',()=>{
 
   //mainWindow.setFullScreen(true);
   mainWindow.maximize();
+ // mainWindow.webContents.openDevTools()
 });
 
