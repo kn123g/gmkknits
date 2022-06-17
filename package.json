@@ -56,7 +56,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.12.62",
     "codelyzer": "^6.0.0",
-    "electron": "^10.1.2",
+    "electron": "^15.5.5",
     "electron-builder": "^20.44.4",
     "electron-packager": "^15.1.0",
     "electron-wix-msi": "^3.2.0",
